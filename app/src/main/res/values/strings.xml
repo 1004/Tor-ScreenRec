@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Tor ScreenRec</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_need_help">Need help?</string>
+    <string name="title_bridge_status">Bridge status</string>
+    <string name="bridge_intro">Bridge intro</string>
+    <string name="title_install">Install</string>
+    <string name="title_uninstall">Uninstall</string>
+    <string name="screen_cast">Screen cast</string>
+    <string name="others">others</string>
+    <string name="share">Share</string>
+    <string name="installing">Installing bridge</string>
+    <string name="install_success">Install success</string>
+    <string name="restart">Restart android</string>
+    <string name="install_fail">Install fail: %1$s</string>
+    <string name="report">Report</string>
+    <string name="recorder_description">Recording for screen via Tor ScreenRec</string>
+    <string name="remote_err">Remote error</string>
+</resources>
