@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Tor ScreenRec</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">设置</string>
+    <string name="title_bridge_status">录制管理器</string>
+    <string name="bridge_intro"><b>录制管理器</b>是安装在System分区下的一个应用框架，该框架可以帮助我们实现无缝的内容或者声音录制，在开始录制内容之前，请安装该框架。</string>
+    <string name="title_install">立即安装</string>
+    <string name="title_uninstall">卸载</string>
+    <string name="screen_cast">录制</string>
+    <string name="others">其他</string>
+    <string name="share">分享</string>
+    <string name="installing">正在安装</string>
+    <string name="install_success">安装成功</string>
+    <string name="restart">软重启</string>
+    <string name="install_fail">安装失败：%1$s</string>
+    <string name="report">报告</string>
+    <string name="recorder_description">我是说明</string>
+    <string name="remote_err">远程错误</string>
+    <string name="installed_version_name">已安装<i>%1$s</i></string>
+    <string name="bridge_uninstalled">录制管理器<i>未安装</i></string>
+    <string name="title_audio_source">Audio source</string>
+    <string name="audio_source_noop">Noop</string>
+    <string name="audio_source_mic">Mic</string>
+    <string name="audio_source_submix">Submix</string>
+</resources>

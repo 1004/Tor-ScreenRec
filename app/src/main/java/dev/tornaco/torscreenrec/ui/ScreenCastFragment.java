@@ -1,6 +1,7 @@
 package dev.tornaco.torscreenrec.ui;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.annotation.IdRes;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.stericson.rootools.RootTools;
 
@@ -32,9 +34,12 @@ import dev.nick.tiles.tile.DashboardFragment;
 import dev.tornaco.torscreenrec.DrawerNavigatorActivity;
 import dev.tornaco.torscreenrec.R;
 import dev.tornaco.torscreenrec.bridge.Installer;
+import dev.tornaco.torscreenrec.common.SharedExecutor;
 import dev.tornaco.torscreenrec.pref.SettingsProvider;
 import dev.tornaco.torscreenrec.pref.StorageManager;
+import dev.tornaco.torscreenrec.ui.tiles.AudioSourceTile;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Created by Tornaco on 2017/7/26.
@@ -56,6 +61,10 @@ public class ScreenCastFragment extends DashboardFragment {
     @Getter
     private SettingsProvider settingsProvider;
 
+    @Getter
+    @Setter
+    private Context appContext;
+
     @Override
     protected int getLayoutId() {
         return R.layout.layout_screen_cast;
@@ -66,6 +75,12 @@ public class ScreenCastFragment extends DashboardFragment {
         rootView = super.onCreateView(inflater, container, savedInstanceState);
         setupView();
         return rootView;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        setAppContext(context.getApplicationContext());
     }
 
     @Override
@@ -129,7 +144,9 @@ public class ScreenCastFragment extends DashboardFragment {
     @Override
     protected void onCreateDashCategories(List<Category> categories) {
         super.onCreateDashCategories(categories);
-
+        Category category = new Category();
+        category.addTile(new AudioSourceTile(getContext()));
+        categories.add(category);
     }
 
     @SuppressWarnings("unchecked")
@@ -155,7 +172,6 @@ public class ScreenCastFragment extends DashboardFragment {
         statusView.setColorFilter(ContextCompat.getColor(getContext(),
                 installed ? R.color.green : R.color.red));
         statusView.setImageResource(installed ? R.drawable.ic_check_circle_black_24dp : R.drawable.ic_info_black_24dp);
-
 
         DrawerNavigatorActivity drawerNavigatorActivity = (DrawerNavigatorActivity) getActivity();
         FloatingActionButton floatingActionButton = drawerNavigatorActivity.getFloatingActionButton();
@@ -183,6 +199,38 @@ public class ScreenCastFragment extends DashboardFragment {
                 onRequestInstall(!installed, view);
             }
         });
+
+
+        // Retrieve version.
+        if (installed) {
+            SharedExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    String name = getAppContext().getString(R.string.version_name_unknown);
+                    try {
+                        name = RecBridgeServiceProxy.from(getContext().getApplicationContext())
+                                .getVersionName();
+                    } catch (RemoteException e) {
+                        Logger.e("e", "Fail get version name");
+                    }
+                    final String versionNameMessage = getAppContext().getString(R.string.installed_version_name, name);
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateCardTitle(versionNameMessage);
+                        }
+                    });
+                }
+            });
+        } else {
+            updateCardTitle(getAppContext().getString(R.string.bridge_uninstalled));
+        }
+    }
+
+    private void updateCardTitle(String title) {
+        final TextView textView = findView(android.R.id.title);
+        textView.setText(title);
     }
 
     private void onRequestStart() {
@@ -197,7 +245,7 @@ public class ScreenCastFragment extends DashboardFragment {
                                     .useMediaProjection(settingsProvider.getBoolean(SettingsProvider.Key.USER_PROJECTION))
                                     .stopOnShake(settingsProvider.getBoolean(SettingsProvider.Key.SHAKE_STOP))
                                     .shutterSound(settingsProvider.getBoolean(SettingsProvider.Key.SHUTTER_SOUND))
-                                    .path(StorageManager.getInstance().getVideoRootPath())
+                                    .path(StorageManager.getInstance().createVideoFilePath())
                                     .build(),
 
                             new TokenAdapter() {
