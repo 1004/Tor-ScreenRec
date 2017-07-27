@@ -37,8 +37,8 @@ import dev.tornaco.torscreenrec.bridge.Installer;
 import dev.tornaco.torscreenrec.common.SharedExecutor;
 import dev.tornaco.torscreenrec.pref.SettingsProvider;
 import dev.tornaco.torscreenrec.pref.StorageManager;
+import dev.tornaco.torscreenrec.ui.tiles.AudioSourceTile;
 import dev.tornaco.torscreenrec.ui.tiles.RecordingBrowserTile;
-import dev.tornaco.torscreenrec.ui.tiles.WithAudioTile;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -151,7 +151,7 @@ public class ScreenCastFragment extends DashboardFragment {
 
         Category quickSettings = new Category();
         quickSettings.titleRes = R.string.quick_settings;
-        quickSettings.addTile(new WithAudioTile(getContext()));
+        quickSettings.addTile(new AudioSourceTile(getContext()));
 
         categories.add(quickFunc);
         categories.add(quickSettings);
@@ -223,6 +223,8 @@ public class ScreenCastFragment extends DashboardFragment {
                     }
                     final String versionNameMessage = getAppContext().getString(R.string.installed_version_name, name);
 
+                    if (getActivity() == null) return;
+
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -254,6 +256,7 @@ public class ScreenCastFragment extends DashboardFragment {
                                     .stopOnShake(settingsProvider.getBoolean(SettingsProvider.Key.SHAKE_STOP))
                                     .shutterSound(settingsProvider.getBoolean(SettingsProvider.Key.SHUTTER_SOUND))
                                     .path(StorageManager.getInstance().createVideoFilePath())
+                                    .showNotification(true)
                                     .build(),
 
                             new TokenAdapter() {

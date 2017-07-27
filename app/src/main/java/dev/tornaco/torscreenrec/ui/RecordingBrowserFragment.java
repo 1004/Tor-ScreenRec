@@ -339,7 +339,8 @@ public class RecordingBrowserFragment extends Fragment {
             p.setIndeterminate(true);
 
             try {
-                FFmpeg.getInstance(getContext()).execute(commands, new FFmpegExecuteResponseHandler() {
+                FFmpeg.getInstance(getContext()).execute(commands,
+                        new FFmpegExecuteResponseHandler() {
                     @Override
                     public void onSuccess(String message) {
                         Logger.d(message);
