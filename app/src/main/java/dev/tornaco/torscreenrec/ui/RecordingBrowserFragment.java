@@ -90,6 +90,7 @@ public class RecordingBrowserFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getActivity().setTitle(R.string.title_recording_browser);
         showRetention();
     }
 

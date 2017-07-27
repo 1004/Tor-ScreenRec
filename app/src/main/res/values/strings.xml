@@ -30,7 +30,7 @@
     <string name="quick_settings">Quick settings</string>
     <string name="title_with_audio">With audio</string>
     <string name="summary_with_audio">Source <i>%1$s</i></string>
-    <string name="title_recording_browser">My recordings</string>
+    <string name="title_recording_browser">View my recordings</string>
     <string name="quick_function">Quick func</string>
     <string name="file_size">Size: %1$s</string>
     <string name="video_length">Length: %1$s</string>

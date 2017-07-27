@@ -28,7 +28,7 @@
     <string name="quick_settings">快速设置</string>
     <string name="title_with_audio">声音</string>
     <string name="summary_with_audio">音源 <i>%1$s</i></string>
-    <string name="title_recording_browser">我的录像</string>
+    <string name="title_recording_browser">查看我的录像</string>
     <string name="quick_function">现在你可以</string>
     <string name="file_size">文件大小：%1$s</string>
     <string name="video_length">时长：%1$s</string>

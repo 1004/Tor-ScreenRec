@@ -225,18 +225,18 @@ public class ScreenCastFragment extends DashboardFragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            updateCardTitle(versionNameMessage);
+                            updateCardStatus(versionNameMessage);
                         }
                     });
                 }
             });
         } else {
-            updateCardTitle(getAppContext().getString(R.string.bridge_uninstalled));
+            updateCardStatus(getAppContext().getString(R.string.bridge_uninstalled));
         }
     }
 
-    private void updateCardTitle(String title) {
-        final TextView textView = findView(android.R.id.title);
+    private void updateCardStatus(String title) {
+        final TextView textView = findView(R.id.bridge_status);
         textView.setText(title);
     }
 
