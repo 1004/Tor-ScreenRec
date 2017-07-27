@@ -294,35 +294,69 @@ public class ScreenCastFragment extends DashboardFragment {
     private void onRequestInstall(boolean install, final View view) {
         final ProgressDialog p = new ProgressDialog(getActivity());
         p.setIndeterminate(true);
-        p.setMessage(getString(R.string.installing));
-        p.setCancelable(false);
-        p.show();
-        Installer.installAsync(getContext(), new Installer.Callback() {
-            @Override
-            public void onSuccess() {
-                p.dismiss();
-                Snackbar.make(view, R.string.install_success, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(R.string.restart, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                RootTools.restartAndroid();
-                            }
-                        }).show();
-            }
+        if (install) {
+            p.setMessage(getString(R.string.installing));
+            p.setCancelable(false);
+            p.show();
 
-            @Override
-            public void onFailure(Throwable throwable, String errTitle) {
-                p.dismiss();
-                Snackbar.make(view, getString(R.string.install_fail, errTitle),
-                        Snackbar.LENGTH_LONG)
-                        .setAction(R.string.report, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
+            Installer.installAsync(getContext(), new Installer.Callback() {
+                @Override
+                public void onSuccess() {
+                    p.dismiss();
+                    Snackbar.make(view, R.string.install_success, Snackbar.LENGTH_INDEFINITE)
+                            .setAction(R.string.restart, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    RootTools.restartAndroid();
+                                }
+                            }).show();
+                }
 
-                            }
-                        }).show();
-            }
-        });
+                @Override
+                public void onFailure(Throwable throwable, String errTitle) {
+                    p.dismiss();
+                    Snackbar.make(view, getString(R.string.install_fail, errTitle),
+                            Snackbar.LENGTH_LONG)
+                            .setAction(R.string.report, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                }
+                            }).show();
+                }
+            });
+        } else {
+            p.setMessage(getString(R.string.uninstalling));
+            p.setCancelable(false);
+            p.show();
+
+            Installer.unInstallAsync(new Installer.Callback() {
+                @Override
+                public void onSuccess() {
+                    p.dismiss();
+                    Snackbar.make(view, R.string.uninstall_success, Snackbar.LENGTH_INDEFINITE)
+                            .setAction(R.string.restart, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    RootTools.restartAndroid();
+                                }
+                            }).show();
+                }
+
+                @Override
+                public void onFailure(Throwable throwable, String errTitle) {
+                    p.dismiss();
+                    Snackbar.make(view, getString(R.string.uninstall_fail, errTitle),
+                            Snackbar.LENGTH_LONG)
+                            .setAction(R.string.report, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                }
+                            }).show();
+                }
+            });
+        }
     }
 
     protected void onRemoteException(RemoteException e) {

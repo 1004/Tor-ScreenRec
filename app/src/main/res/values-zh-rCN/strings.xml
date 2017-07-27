@@ -13,9 +13,12 @@
     <string name="others">其他</string>
     <string name="share">分享</string>
     <string name="installing">正在安装</string>
+    <string name="uninstalling">正在卸载</string>
     <string name="install_success">安装成功</string>
+    <string name="uninstall_success">卸载成功</string>
     <string name="restart">软重启</string>
     <string name="install_fail">安装失败：%1$s</string>
+    <string name="uninstall_fail">卸载失败：%1$s</string>
     <string name="report">报告</string>
     <string name="recorder_description">我是说明</string>
     <string name="remote_err">远程错误</string>

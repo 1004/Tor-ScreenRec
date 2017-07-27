@@ -11,11 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
+import dev.tornaco.torscreenrec.pref.SettingsProvider;
 import dev.tornaco.torscreenrec.ui.FragmentController;
 import dev.tornaco.torscreenrec.ui.ScreenCastFragment;
 import dev.tornaco.torscreenrec.ui.widget.RecordingButton;
@@ -63,6 +65,16 @@ public class DrawerNavigatorActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        String uName = SettingsProvider.get().getString(SettingsProvider.Key.USR_NAME);
+        TextView textView = (TextView) findViewById(R.id.user_name);
+        if (textView != null) {
+            textView.setText(uName);
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -86,10 +98,6 @@ public class DrawerNavigatorActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }

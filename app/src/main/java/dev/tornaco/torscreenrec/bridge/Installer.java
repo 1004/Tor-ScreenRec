@@ -36,7 +36,22 @@ public class Installer {
         }).start();
     }
 
+    public static void unInstallAsync(final Callback call) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                unInstall(call);
+            }
+        }).start();
+    }
+
     public static void install(Context context, Callback callback) {
+
+        if (!RootTools.isRootAvailable()) {
+            callback.onFailure(new Throwable(), "Root not available");
+            return;
+        }
+
         String tmpPath = Files.createTempDir().getPath() + File.separator + TMP_APK_NAME;
         try {
             copy(context, PATH, tmpPath);
@@ -46,10 +61,19 @@ public class Installer {
         }
 
         if (!RootTools.copyFile(tmpPath, DEST_PATH, true, true)) {
-            callback.onFailure(new Throwable(), "Copy to dest fail");
+            callback.onFailure(new Throwable(), "Fail copy to system");
             return;
         }
         callback.onSuccess();
+    }
+
+    public static void unInstall(Callback callback) {
+        boolean ok = RootTools.deleteFileOrDirectory(DEST_PATH, true);
+        if (ok) {
+            callback.onSuccess();
+        } else {
+            callback.onFailure(new Throwable(), "Fail delete file");
+        }
     }
 
     private static AssetManager openAssets(Context context) {
