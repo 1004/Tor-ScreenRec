@@ -37,7 +37,8 @@ import dev.tornaco.torscreenrec.bridge.Installer;
 import dev.tornaco.torscreenrec.common.SharedExecutor;
 import dev.tornaco.torscreenrec.pref.SettingsProvider;
 import dev.tornaco.torscreenrec.pref.StorageManager;
-import dev.tornaco.torscreenrec.ui.tiles.AudioSourceTile;
+import dev.tornaco.torscreenrec.ui.tiles.RecordingBrowserTile;
+import dev.tornaco.torscreenrec.ui.tiles.WithAudioTile;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -120,7 +121,7 @@ public class ScreenCastFragment extends DashboardFragment {
 
     private void setupStatus() {
 
-        settingsProvider = new SettingsProvider(getContext().getApplicationContext());
+        settingsProvider = SettingsProvider.get();
 
         try {
             RecBridgeServiceProxy.from(getContext())
@@ -144,9 +145,16 @@ public class ScreenCastFragment extends DashboardFragment {
     @Override
     protected void onCreateDashCategories(List<Category> categories) {
         super.onCreateDashCategories(categories);
-        Category category = new Category();
-        category.addTile(new AudioSourceTile(getContext()));
-        categories.add(category);
+        Category quickFunc = new Category();
+        quickFunc.titleRes = R.string.quick_function;
+        quickFunc.addTile(new RecordingBrowserTile(getContext()));
+
+        Category quickSettings = new Category();
+        quickSettings.titleRes = R.string.quick_settings;
+        quickSettings.addTile(new WithAudioTile(getContext()));
+
+        categories.add(quickFunc);
+        categories.add(quickSettings);
     }
 
     @SuppressWarnings("unchecked")

@@ -26,7 +26,7 @@ public class AudioSourceTile extends QuickTile {
     public AudioSourceTile(final Context context) {
         super(context);
 
-        final SettingsProvider settingsProvider = new SettingsProvider(context);
+        final SettingsProvider settingsProvider = SettingsProvider.get();
 
         this.titleRes = R.string.title_audio_source;
         this.iconRes = R.drawable.ic_speaker_black_24dp;

@@ -21,8 +21,27 @@
     <string name="remote_err">远程错误</string>
     <string name="installed_version_name">已安装<i>%1$s</i></string>
     <string name="bridge_uninstalled">录制管理器<i>未安装</i></string>
-    <string name="title_audio_source">Audio source</string>
-    <string name="audio_source_noop">Noop</string>
+    <string name="title_audio_source">音源</string>
+    <string name="audio_source_noop">无</string>
     <string name="audio_source_mic">Mic</string>
     <string name="audio_source_submix">Submix</string>
+    <string name="quick_settings">快速设置</string>
+    <string name="title_with_audio">声音</string>
+    <string name="summary_with_audio">音源 <i>%1$s</i></string>
+    <string name="title_recording_browser">我的录像</string>
+    <string name="quick_function">现在你可以</string>
+    <string name="file_size">文件大小：%1$s</string>
+    <string name="video_length">时长：%1$s</string>
+
+    <string name="action_play">播放</string>
+    <string name="action_remove">移除</string>
+    <string name="action_rename">重命名</string>
+    <string name="action_togif">转成GIF</string>
+    <string name="action_share">分享</string>
+
+    <string name="result_to_gif_ok">GIF已经保存到:%s</string>
+    <string name="result_to_gif_fail">转换失败，请报告该错误！</string>
+
+    <string name="title_perm_require">需要权限</string>
+    <string name="summary_perm_require">录制屏幕内容需要权限，接下来的权限申请页面请勾选允许，否则程序无法正常工作</string>
 </resources>

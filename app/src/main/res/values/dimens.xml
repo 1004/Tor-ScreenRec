@@ -15,4 +15,6 @@
 
     <dimen name="card_radius">0dp</dimen>
     <dimen name="card_elevation">1dp</dimen>
+
+    <dimen name="thumbnail_size">42dp</dimen>
 </resources>

@@ -27,4 +27,23 @@
     <string name="audio_source_noop">Noop</string>
     <string name="audio_source_mic">Mic</string>
     <string name="audio_source_submix">Submix</string>
+    <string name="quick_settings">Quick settings</string>
+    <string name="title_with_audio">With audio</string>
+    <string name="summary_with_audio">Source <i>%1$s</i></string>
+    <string name="title_recording_browser">My recordings</string>
+    <string name="quick_function">Quick func</string>
+    <string name="file_size">Size: %1$s</string>
+    <string name="video_length">Length: %1$s</string>
+
+    <string name="action_play">Play</string>
+    <string name="action_remove">Remove</string>
+    <string name="action_rename">Rename</string>
+    <string name="action_togif">Convert to GIF</string>
+    <string name="action_share">Share</string>
+
+    <string name="result_to_gif_ok">Gif has been saved to:%s</string>
+    <string name="result_to_gif_fail">Fail to convert to GIF, please file a bug!</string>
+
+    <string name="title_perm_require">Permissions</string>
+    <string name="summary_perm_require">Please check to allow me Capture your screen at the next request</string>
 </resources>
