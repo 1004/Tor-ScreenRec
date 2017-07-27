@@ -2,7 +2,6 @@ package dev.tornaco.torscreenrec;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +18,7 @@ import java.util.List;
 
 import dev.tornaco.torscreenrec.ui.FragmentController;
 import dev.tornaco.torscreenrec.ui.ScreenCastFragment;
+import dev.tornaco.torscreenrec.ui.widget.RecordingButton;
 import lombok.Getter;
 
 public class DrawerNavigatorActivity extends AppCompatActivity
@@ -30,7 +30,7 @@ public class DrawerNavigatorActivity extends AppCompatActivity
     private FragmentController cardController;
 
     @Getter
-    private FloatingActionButton floatingActionButton;
+    private RecordingButton floatingActionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class DrawerNavigatorActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        floatingActionButton = (RecordingButton) findViewById(R.id.fab);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

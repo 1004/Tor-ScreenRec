@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.annotation.IdRes;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -33,12 +32,14 @@ import dev.nick.tiles.tile.Category;
 import dev.nick.tiles.tile.DashboardFragment;
 import dev.tornaco.torscreenrec.DrawerNavigatorActivity;
 import dev.tornaco.torscreenrec.R;
+import dev.tornaco.torscreenrec.TorScreenRecApp;
 import dev.tornaco.torscreenrec.bridge.Installer;
 import dev.tornaco.torscreenrec.common.SharedExecutor;
 import dev.tornaco.torscreenrec.pref.SettingsProvider;
 import dev.tornaco.torscreenrec.pref.StorageManager;
 import dev.tornaco.torscreenrec.ui.tiles.AudioSourceTile;
 import dev.tornaco.torscreenrec.ui.tiles.RecordingBrowserTile;
+import dev.tornaco.torscreenrec.ui.widget.RecordingButton;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -65,6 +66,8 @@ public class ScreenCastFragment extends DashboardFragment {
     @Getter
     @Setter
     private Context appContext;
+
+    private RecordingButton floatingActionButton;
 
     @Override
     protected int getLayoutId() {
@@ -100,6 +103,7 @@ public class ScreenCastFragment extends DashboardFragment {
             } else {
                 isRecording.set(true);
             }
+            refreshFabState();
             Logger.i("onStop");
         }
 
@@ -110,6 +114,7 @@ public class ScreenCastFragment extends DashboardFragment {
             } else {
                 isRecording.set(false);
             }
+            refreshFabState();
             Logger.i("onStop");
         }
 
@@ -123,23 +128,15 @@ public class ScreenCastFragment extends DashboardFragment {
 
         settingsProvider = SettingsProvider.get();
 
-        try {
-            RecBridgeServiceProxy.from(getContext())
-                    .watch(watcher);
-        } catch (RemoteException e) {
-            onRemoteException(e);
-        }
+        TorScreenRecApp app = (TorScreenRecApp) getActivity().getApplication();
+        app.watch(watcher);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        try {
-            RecBridgeServiceProxy.from(getContext())
-                    .unWatch(watcher);
-        } catch (RemoteException e) {
-            onRemoteException(e);
-        }
+        TorScreenRecApp app = (TorScreenRecApp) getActivity().getApplication();
+        app.unWatch(watcher);
     }
 
     @Override
@@ -182,7 +179,7 @@ public class ScreenCastFragment extends DashboardFragment {
         statusView.setImageResource(installed ? R.drawable.ic_check_circle_black_24dp : R.drawable.ic_info_black_24dp);
 
         DrawerNavigatorActivity drawerNavigatorActivity = (DrawerNavigatorActivity) getActivity();
-        FloatingActionButton floatingActionButton = drawerNavigatorActivity.getFloatingActionButton();
+        floatingActionButton = drawerNavigatorActivity.getFloatingActionButton();
 
         if (installed) {
             floatingActionButton.show();
@@ -277,6 +274,21 @@ public class ScreenCastFragment extends DashboardFragment {
         } catch (RemoteException e) {
             onRemoteException(e);
         }
+    }
+
+    private void refreshFabState() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (isRecording.get()) {
+                    floatingActionButton.setImageResource(R.drawable.stop);
+                    floatingActionButton.onRecording();
+                } else {
+                    floatingActionButton.setImageResource(R.drawable.record);
+                    floatingActionButton.onStopRecording();
+                }
+            }
+        });
     }
 
     private void onRequestInstall(boolean install, final View view) {

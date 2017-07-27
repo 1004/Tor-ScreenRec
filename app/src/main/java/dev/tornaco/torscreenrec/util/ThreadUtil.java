@@ -43,4 +43,12 @@ public class ThreadUtil {
         t.setPriority(Thread.NORM_PRIORITY);
         return t;
     }
+
+    public static void sleep(long timeMills) {
+        try {
+            Thread.sleep(timeMills);
+        } catch (InterruptedException ignored) {
+
+        }
+    }
 }
