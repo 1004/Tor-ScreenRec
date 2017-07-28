@@ -5,4 +5,10 @@
         <item>@string/orientation_p</item>
         <item>@string/orientation_l</item>
     </string-array>
+
+    <string-array name="preview_sizes">
+        <item>@string/preview_size_s</item>
+        <item>@string/preview_size_n</item>
+        <item>@string/preview_size_l</item>
+    </string-array>
 </resources>

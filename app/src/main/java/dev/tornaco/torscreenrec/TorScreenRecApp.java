@@ -42,9 +42,13 @@ public class TorScreenRecApp extends Application {
     @Delegate
     private LifeCycleHandler lifeCycleHandler;
 
+    @Getter
+    private static TorScreenRecApp App;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        App = this;
         Logger.config(Settings.builder().tag("TorScreenRec").logLevel(Logger.LogLevel.ALL).build());
         SettingsProvider.init(getApplicationContext());
         watcherProxy = new WatcherProxy();

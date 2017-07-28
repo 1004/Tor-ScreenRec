@@ -2,6 +2,7 @@ package dev.tornaco.torscreenrec.pref;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.hardware.Camera;
 import android.os.Environment;
 
 import java.io.File;
@@ -10,6 +11,7 @@ import java.util.Observable;
 import dev.nick.library.AudioSource;
 import dev.nick.library.Orientations;
 import dev.nick.library.ValidResolutions;
+import dev.tornaco.torscreenrec.camera.PreviewSize;
 import dev.tornaco.torscreenrec.common.DateUtils;
 import dev.tornaco.torscreenrec.control.FloatControlTheme;
 import lombok.Getter;
@@ -24,6 +26,8 @@ public class SettingsProvider extends Observable {
 
     private static final String PREF_NAME = "rec_app_settings";
 
+    public static final int CAMERA_FACING_FRONT = Camera.CameraInfo.CAMERA_FACING_FRONT;
+    public static final int CAMERA_FACING_BACK = Camera.CameraInfo.CAMERA_FACING_BACK;
 
     public enum Key {
         USR_NAME("Fake.Name"),
@@ -41,7 +45,10 @@ public class SettingsProvider extends Observable {
         FAME_RATE(30),
         RESOLUTION(ValidResolutions.DESC[ValidResolutions.INDEX_MASK_AUTO]),
         ORIENTATION(Orientations.AUTO),
-        USER_PROJECTION(false);
+        USER_PROJECTION(false),
+        CAMERA(false),
+        CAMERA_SIZE(PreviewSize.SMALL),
+        PREFERRED_CAMERA(CAMERA_FACING_FRONT);
 
         @Getter
         Object defValue;

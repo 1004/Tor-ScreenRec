@@ -142,7 +142,7 @@ public class RecordingBrowserFragment extends Fragment {
             new MaterialStyledDialog.Builder(getActivity())
                     .setTitle(R.string.title_perm_require)
                     .setDescription(R.string.summary_perm_require)
-                    .setHeaderDrawable(R.drawable.ic_folder_open_black_24dp)
+                    .setIcon(R.drawable.ic_folder_white_24dp)
                     .withDarkerOverlay(false)
                     .setCancelable(false)
                     .setPositiveText(android.R.string.ok)

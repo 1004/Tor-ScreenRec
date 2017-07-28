@@ -14,13 +14,16 @@ import dev.tornaco.torscreenrec.ui.tiles.FloatControlThemeTile;
 import dev.tornaco.torscreenrec.ui.tiles.FlowViewTile;
 import dev.tornaco.torscreenrec.ui.tiles.FrameRateTile;
 import dev.tornaco.torscreenrec.ui.tiles.OrientationTile;
+import dev.tornaco.torscreenrec.ui.tiles.PreviewSizeDropdownTile;
 import dev.tornaco.torscreenrec.ui.tiles.ShakeTile;
 import dev.tornaco.torscreenrec.ui.tiles.ShowTouchTile;
 import dev.tornaco.torscreenrec.ui.tiles.SoundEffectTile;
 import dev.tornaco.torscreenrec.ui.tiles.StopOnVolumeTile;
 import dev.tornaco.torscreenrec.ui.tiles.StopWhenScreenOffTile;
 import dev.tornaco.torscreenrec.ui.tiles.StorageTile;
+import dev.tornaco.torscreenrec.ui.tiles.SwitchCameraTile;
 import dev.tornaco.torscreenrec.ui.tiles.VideoResTile;
+import dev.tornaco.torscreenrec.ui.tiles.WithCameraTile;
 
 /**
  * Created by Tornaco on 2017/7/28.
@@ -57,6 +60,12 @@ public class SettingsFragment extends DashboardFragment {
         access.addTile(new ShakeTile(getContext()));
         access.addTile(new StopOnVolumeTile(getContext()));
 
+        Category camera = new Category();
+        camera.titleRes = R.string.summary_camera;
+        camera.addTile(new WithCameraTile(getContext()));
+        camera.addTile(new PreviewSizeDropdownTile(getContext()));
+        camera.addTile(new SwitchCameraTile(getContext()));
+
         Category floatView = new Category();
         floatView.titleRes = R.string.title_float_window;
         floatView.addTile(new FlowViewTile(getContext()));
@@ -69,6 +78,7 @@ public class SettingsFragment extends DashboardFragment {
 
         categories.add(video);
         categories.add(audio);
+        categories.add(camera);
         categories.add(access);
         categories.add(floatView);
         categories.add(storage);
