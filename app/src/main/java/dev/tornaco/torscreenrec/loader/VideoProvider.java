@@ -12,7 +12,7 @@ import java.util.List;
 
 import dev.tornaco.torscreenrec.R;
 import dev.tornaco.torscreenrec.modle.Video;
-import dev.tornaco.torscreenrec.pref.StorageManager;
+import dev.tornaco.torscreenrec.pref.SettingsProvider;
 import dev.tornaco.torscreenrec.util.MiscUtils;
 
 public class VideoProvider {
@@ -54,7 +54,9 @@ public class VideoProvider {
                                     .getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
                     File file = new File(path);
                     if (!file.exists()) continue;
-                    if (!file.getParentFile().getPath().equals(StorageManager.getInstance().getVideoRootPath())) {
+                    if (!file.getParentFile().getPath().equals(SettingsProvider.get().getString(
+                            SettingsProvider.Key.VIDEO_ROOT_PATH
+                    ))) {
                         continue;
                     }
                     long duration = cursor

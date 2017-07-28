@@ -51,4 +51,6 @@ dependencies {
 
     // https://github.com/czy1121/settingscompat
     compile 'com.github.czy1121:settingscompat:1.1.4'
+
+    compile 'com.nononsenseapps:filepicker:4.1.0'
 }

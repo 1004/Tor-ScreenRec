@@ -2,12 +2,15 @@ package dev.tornaco.torscreenrec.pref;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Environment;
 
+import java.io.File;
 import java.util.Observable;
 
 import dev.nick.library.AudioSource;
 import dev.nick.library.Orientations;
 import dev.nick.library.ValidResolutions;
+import dev.tornaco.torscreenrec.common.DateUtils;
 import dev.tornaco.torscreenrec.control.FloatControlTheme;
 import lombok.Getter;
 
@@ -21,16 +24,20 @@ public class SettingsProvider extends Observable {
 
     private static final String PREF_NAME = "rec_app_settings";
 
+
     public enum Key {
         USR_NAME("Fake.Name"),
+        VIDEO_ROOT_PATH(getDefaultVideoRootPath()),
         AUDIO_SOURCE(AudioSource.NOOP),
         WITH_AUDIO(false),
         SHUTTER_SOUND(false),
         SHAKE_STOP(false),
+        VOLUME_STOP(false),
+        SCREEN_OFF_STOP(false),
+        SHOW_TOUCH(false),
         FLOAT_WINDOW(false),
         FLOAT_WINDOW_ALPHA(50),
         FLOAT_WINDOW_THEME(FloatControlTheme.DefaultDark.name()),
-        SCREEN_OFF_STOP(false),
         FAME_RATE(30),
         RESOLUTION(ValidResolutions.DESC[ValidResolutions.INDEX_MASK_AUTO]),
         ORIENTATION(Orientations.AUTO),
@@ -92,4 +99,17 @@ public class SettingsProvider extends Observable {
         setChanged();
         notifyObservers(key);
     }
+
+    public static String getDefaultVideoRootPath() {
+        return Environment.getExternalStorageDirectory().getPath()
+                + File.separator + "ScreenRecorder";
+    }
+
+    public String createVideoFilePath() {
+        return getString(Key.VIDEO_ROOT_PATH)
+                + File.separator
+                + DateUtils.formatForFileName(System.currentTimeMillis()) + ".mp4";
+    }
+
+    public static final int REQUEST_CODE_FILE_PICKER = 0x100;
 }

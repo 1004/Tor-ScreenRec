@@ -10,7 +10,6 @@ import dev.nick.library.RecBridgeServiceProxy;
 import dev.nick.library.TokenAdapter;
 import dev.tornaco.torscreenrec.R;
 import dev.tornaco.torscreenrec.pref.SettingsProvider;
-import dev.tornaco.torscreenrec.pref.StorageManager;
 
 /**
  * Created by Tornaco on 2017/7/28.
@@ -32,7 +31,7 @@ public class RecRequestHandler {
                                     .useMediaProjection(settingsProvider.getBoolean(SettingsProvider.Key.USER_PROJECTION))
                                     .stopOnShake(settingsProvider.getBoolean(SettingsProvider.Key.SHAKE_STOP))
                                     .shutterSound(settingsProvider.getBoolean(SettingsProvider.Key.SHUTTER_SOUND))
-                                    .path(StorageManager.getInstance().createVideoFilePath())
+                                    .path(SettingsProvider.get().createVideoFilePath())
                                     .showNotification(true)
                                     .build(),
 
@@ -49,7 +48,7 @@ public class RecRequestHandler {
         return true;
     }
 
-    public static boolean stop(Context context){
+    public static boolean stop(Context context) {
         try {
             RecBridgeServiceProxy.from(context).stop();
         } catch (RemoteException e) {
