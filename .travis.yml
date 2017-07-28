@@ -1,10 +1,7 @@
 language: android
-
 jdk: oraclejdk8
-# Turn off caching to avoid any caching problems
 cache: false
 sudo: false
-
 android:
   components:
   - build-tools-25.0.2
@@ -12,18 +9,27 @@ android:
   - android-24
   - extra-android-m2repository
   - extra-android-support
-
-
 script:
- - "./gradlew assembleDebug"
-
+- "./gradlew assembleDebug"
 before_script:
- - mkdir -p "$ANDROID_HOME/licenses"
- - cp ./android-sdk-license "$ANDROID_HOME/licenses/"
-
+- mkdir -p "$ANDROID_HOME/licenses"
+- cp ./android-sdk-license "$ANDROID_HOME/licenses/"
 notifications:
   email:
     recipients:
-      - tornaco@163.com
-    on_success: always # default: change
-    on_failure: always # default: always
+    - tornaco@163.com
+    on_success: always
+    on_failure: always
+before_install:
+- openssl aes-256-cbc -K $encrypted_25bf8213659f_key -iv $encrypted_25bf8213659f_iv
+  -in keys_android.jks.enc -out keys/keys_android.jks -d
+deploy:
+  provider: releases
+  api_key:
+    secure: MTQrVyM859OHwOTSBGzatfCPrgXAyaLz3uMk8q89K0Le6SmQuZ+KcCZNI2ktO4W88cVttNVQrto+FahYL/xSanFTdcwvC3i+++x/EI2o+zBa0WqOVK3VI1+tYeUm3Cu5pkYF5PqTUkaERSLiNDP8KEcnsIOpOAHxz7EAun49EYKNGIiVi+xx+404HI0s9A5XgImooSRSWVo8v+A8zBj4GyRNh2cRzK87Q98BXaj626pW+MIra5N6fY61W5PH0ggtQ2HSJWsveqL5IjuklkerSX4FglGYAh1RU/E20AuBac8+AGDZspV1Pr/ZyYXZ/Z1XU+/JzA/O2SF9xQrbYBF+z5tUnoo7sQoL4OPRBIuIkIbVhf9Vcsn6lbZVh/55baLXwNE6VD6bRxW1e/uubI2d57CSonsk+5PHR69amAyDEp3zbII80osQ6JbY8AbY1xwPlVD/MsRyyMmwKntt6wv7OIlaTHcwQK/71X51Hm2j6cvolK2jtMYB1LfkmB7eIzlNfB3qGx+ex0q6D3jC3Tvhl5EI+fEjelz84x0s3eTv0YVCElIeK3v8ROkTrKNsmvvNMFswpdSIVsYQFL68KSGxMa6hUsgAYOAqM4yOgKRVdl3WOG1hlUSkQsx9TWgF3u2cqOm+Ig+M8V+E3iQYymk0eRxkycREjQE2qtUcGiRt8Cs=
+  file: app/build/outputs/apk/app-release.apk
+    skip_cleanup: true
+  on:
+    repo: Tornaco/Tor-ScreenRec
+    tags: true
+    all_branches: true

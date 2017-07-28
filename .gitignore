@@ -7,3 +7,6 @@
 /build
 /captures
 .externalNativeBuild
+
+keys/keys_android.jks
+gradle.properties
