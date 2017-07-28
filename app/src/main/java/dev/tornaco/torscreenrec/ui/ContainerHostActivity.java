@@ -44,6 +44,9 @@ public class ContainerHostActivity extends TransitionSafeActivity {
         if (RecordingBrowserFragment.class.getName().equals(clz)) {
             return new RecordingBrowserFragment();
         }
+        if (SettingsFragment.class.getName().equals(clz)) {
+            return new SettingsFragment();
+        }
         return null;
     }
 }

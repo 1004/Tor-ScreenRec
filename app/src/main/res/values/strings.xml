@@ -131,4 +131,5 @@
     <string name="theme_def">Default</string>
     <string name="theme_def_dark">Default dark</string>
     <string name="theme_def_circle">Default Circle</string>
+    <string name="title_more_settings">More</string>
 </resources>

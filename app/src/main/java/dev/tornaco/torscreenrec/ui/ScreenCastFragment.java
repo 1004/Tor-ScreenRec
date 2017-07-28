@@ -37,6 +37,7 @@ import dev.tornaco.torscreenrec.control.RecRequestHandler;
 import dev.tornaco.torscreenrec.pref.SettingsProvider;
 import dev.tornaco.torscreenrec.ui.tiles.AudioSourceTile;
 import dev.tornaco.torscreenrec.ui.tiles.FlowViewTile;
+import dev.tornaco.torscreenrec.ui.tiles.MoreSettingsTile;
 import dev.tornaco.torscreenrec.ui.tiles.RecordingBrowserTile;
 import dev.tornaco.torscreenrec.ui.widget.RecordingButton;
 import lombok.Getter;
@@ -150,8 +151,13 @@ public class ScreenCastFragment extends DashboardFragment {
         quickSettings.addTile(new AudioSourceTile(getContext()));
         quickSettings.addTile(new FlowViewTile(getContext()));
 
+        Category moreSettings = new Category();
+        moreSettings.titleRes = R.string.category_others;
+        moreSettings.addTile(new MoreSettingsTile(getContext()));
+
         categories.add(quickFunc);
         categories.add(quickSettings);
+        categories.add(moreSettings);
     }
 
     @SuppressWarnings("unchecked")

@@ -47,7 +47,7 @@
 
     <string name="title_perm_require">需要权限</string>
     <string name="summary_perm_require">录制屏幕内容需要权限，接下来的权限申请页面请勾选允许，否则程序无法正常工作</string>
-    <string name="title_float_view">Float window</string>
+    <string name="title_float_view">悬浮窗</string>
     <string name="elapse_time_zero">00:00</string>
 
 
@@ -125,4 +125,5 @@
     <string name="theme_def">默认</string>
     <string name="theme_def_dark">默认-黑</string>
     <string name="theme_def_circle">默认-圆</string>
+    <string name="title_more_settings">更多设置</string>
 </resources>
