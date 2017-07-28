@@ -20,6 +20,7 @@ public class Installer {
     private static final String PATH = "app-debug-signed.apk";
     private static final String TMP_APK_NAME = "tmp.apk";
     private static final String DEST_PATH = "/system/app/RecBridge.apk";
+    private static final String DEST_PATH_V2 = "/system/app/RecBridge/RecBridge.apk";
 
     public interface Callback {
         void onSuccess();
@@ -46,11 +47,28 @@ public class Installer {
     }
 
     public static void install(Context context, Callback callback) {
+        install(context, DEST_PATH_V2, callback);
+    }
+
+    public static void install(Context context, String to, Callback callback) {
 
         if (!RootTools.isRootAvailable()) {
             callback.onFailure(new Throwable(), "Root not available");
             return;
         }
+
+        // Try uninstall old version.
+        unInstall(DEST_PATH, new Callback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailure(Throwable throwable, String errTitle) {
+
+            }
+        });
 
         String tmpPath = Files.createTempDir().getPath() + File.separator + TMP_APK_NAME;
         try {
@@ -60,7 +78,13 @@ public class Installer {
             return;
         }
 
-        if (!RootTools.copyFile(tmpPath, DEST_PATH, true, true)) {
+        // Create dir.
+        if (!RootTools.mkdir(new File(DEST_PATH_V2).getParent(), true, 755)) {
+            callback.onFailure(new Throwable(), "Fail mkdir in system");
+            return;
+        }
+
+        if (!RootTools.copyFile(tmpPath, to, true, true)) {
             callback.onFailure(new Throwable(), "Fail copy to system");
             return;
         }
@@ -68,7 +92,11 @@ public class Installer {
     }
 
     public static void unInstall(Callback callback) {
-        boolean ok = RootTools.deleteFileOrDirectory(DEST_PATH, true);
+        unInstall(DEST_PATH_V2, callback);
+    }
+
+    public static void unInstall(String path, Callback callback) {
+        boolean ok = RootTools.deleteFileOrDirectory(path, true);
         if (ok) {
             callback.onSuccess();
         } else {

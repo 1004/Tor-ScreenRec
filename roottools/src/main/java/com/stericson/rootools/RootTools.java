@@ -174,6 +174,10 @@ public final class RootTools {
         return getInternals().deleteFileOrDirectory(target, remountAsRw);
     }
 
+    public static boolean mkdir(String path, boolean remountAsRW, int mode) {
+        return getInternals().mkdir(path, remountAsRW, mode);
+    }
+
     /**
      * Use this to check whether or not a file exists on the filesystem.
      *

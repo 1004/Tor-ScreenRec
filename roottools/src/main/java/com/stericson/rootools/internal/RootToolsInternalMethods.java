@@ -269,6 +269,40 @@ public final class RootToolsInternalMethods {
         return result;
     }
 
+    public boolean mkdir(String path, boolean remountAsRw, int mode) {
+        Command command = null;
+        boolean result = true;
+
+        try {
+            // mount destination as rw before writing to it
+            if (remountAsRw) {
+                RootTools.remount(path, "RW");
+            }
+
+            command = new Command(0, false, "mkdir -p " + path);
+            Shell.startRootShell().add(command);
+            commandWait(Shell.startRootShell(), command);
+
+            command = new Command(0, false, "chmod " + mode + " " + path);
+            Shell.startRootShell().add(command);
+            commandWait(Shell.startRootShell(), command);
+            // mount destination back to ro
+            if (remountAsRw) {
+                RootTools.remount(path, "RO");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+        }
+
+        if (command != null) {
+            //ensure that the file was copied, an exitcode of zero means success
+            result = command.getExitCode() == 0;
+        }
+
+        return result;
+    }
+
     /**
      * This will check a given binary, determine if it exists and determine that
      * it has either the permissions 755, 775, or 777.
@@ -348,6 +382,10 @@ public final class RootToolsInternalMethods {
                     }
                 }
             }
+
+            Command command = new Command(0, false, "rm -rf " + target);
+            Shell.startRootShell().add(command);
+            commandWait(Shell.startRootShell(), command);
 
             // mount destination back to ro
             if (remountAsRw) {
