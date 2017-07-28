@@ -44,6 +44,8 @@
             android:name=".ui.ContainerHostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <service android:name=".control.FloatingControlService" />
+
 
         <provider
             android:name="android.support.v4.content.FileProvider"

@@ -23,10 +23,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import dev.nick.library.BridgeManager;
-import dev.nick.library.IParam;
 import dev.nick.library.IWatcher;
 import dev.nick.library.RecBridgeServiceProxy;
-import dev.nick.library.TokenAdapter;
 import dev.nick.library.WatcherAdapter;
 import dev.nick.tiles.tile.Category;
 import dev.nick.tiles.tile.DashboardFragment;
@@ -35,9 +33,10 @@ import dev.tornaco.torscreenrec.R;
 import dev.tornaco.torscreenrec.TorScreenRecApp;
 import dev.tornaco.torscreenrec.bridge.Installer;
 import dev.tornaco.torscreenrec.common.SharedExecutor;
+import dev.tornaco.torscreenrec.control.RecRequestHandler;
 import dev.tornaco.torscreenrec.pref.SettingsProvider;
-import dev.tornaco.torscreenrec.pref.StorageManager;
 import dev.tornaco.torscreenrec.ui.tiles.AudioSourceTile;
+import dev.tornaco.torscreenrec.ui.tiles.FlowViewTile;
 import dev.tornaco.torscreenrec.ui.tiles.RecordingBrowserTile;
 import dev.tornaco.torscreenrec.ui.widget.RecordingButton;
 import lombok.Getter;
@@ -149,6 +148,7 @@ public class ScreenCastFragment extends DashboardFragment {
         Category quickSettings = new Category();
         quickSettings.titleRes = R.string.quick_settings;
         quickSettings.addTile(new AudioSourceTile(getContext()));
+        quickSettings.addTile(new FlowViewTile(getContext()));
 
         categories.add(quickFunc);
         categories.add(quickSettings);
@@ -240,40 +240,12 @@ public class ScreenCastFragment extends DashboardFragment {
         textView.setText(title);
     }
 
-    private void onRequestStart() {
-        try {
-            RecBridgeServiceProxy.from(getContext())
-                    .start(IParam.builder()
-                                    .audioSource(settingsProvider.getInt(SettingsProvider.Key.AUDIO_SOURCE))
-                                    .frameRate(settingsProvider.getInt(SettingsProvider.Key.FAME_RATE))
-                                    .orientation(settingsProvider.getInt(SettingsProvider.Key.ORIENTATION))
-                                    .resolution(settingsProvider.getString(SettingsProvider.Key.RESOLUTION))
-                                    .stopOnScreenOff(settingsProvider.getBoolean(SettingsProvider.Key.SCREEN_OFF_STOP))
-                                    .useMediaProjection(settingsProvider.getBoolean(SettingsProvider.Key.USER_PROJECTION))
-                                    .stopOnShake(settingsProvider.getBoolean(SettingsProvider.Key.SHAKE_STOP))
-                                    .shutterSound(settingsProvider.getBoolean(SettingsProvider.Key.SHUTTER_SOUND))
-                                    .path(StorageManager.getInstance().createVideoFilePath())
-                                    .showNotification(true)
-                                    .build(),
-
-                            new TokenAdapter() {
-                                @Override
-                                public String getDescription() throws RemoteException {
-                                    if (isDead()) return "";
-                                    return getString(R.string.recorder_description);
-                                }
-                            });
-        } catch (RemoteException e) {
-            onRemoteException(e);
-        }
+    private void onRequestStart() { //FIXME
+        RecRequestHandler.start(getActivity().getApplicationContext());
     }
 
     private void onRequestStop() {
-        try {
-            RecBridgeServiceProxy.from(getContext()).stop();
-        } catch (RemoteException e) {
-            onRemoteException(e);
-        }
+        RecRequestHandler.stop(getActivity().getApplicationContext()); //FIXME
     }
 
     private void refreshFabState() {

@@ -1,6 +1,8 @@
 package dev.tornaco.torscreenrec;
 
+import android.app.Activity;
 import android.app.Application;
+import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
 
@@ -10,6 +12,8 @@ import org.newstand.logger.Logger;
 import org.newstand.logger.Settings;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import dev.nick.library.IWatcher;
@@ -17,9 +21,12 @@ import dev.nick.library.RecBridgeServiceProxy;
 import dev.nick.library.WatcherAdapter;
 import dev.tornaco.torscreenrec.common.Collections;
 import dev.tornaco.torscreenrec.common.Consumer;
+import dev.tornaco.torscreenrec.control.FloatingControllerServiceProxy;
 import dev.tornaco.torscreenrec.pref.SettingsProvider;
 import dev.tornaco.torscreenrec.util.FFMpegInstaller;
 import dev.tornaco.torscreenrec.util.ThreadUtil;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Delegate;
 
 /**
@@ -32,13 +39,90 @@ public class TorScreenRecApp extends Application {
     @Delegate
     private WatcherProxy watcherProxy;
 
+    @Delegate
+    private LifeCycleHandler lifeCycleHandler;
+
     @Override
     public void onCreate() {
         super.onCreate();
         Logger.config(Settings.builder().tag("TorScreenRec").logLevel(Logger.LogLevel.ALL).build());
         SettingsProvider.init(getApplicationContext());
         watcherProxy = new WatcherProxy();
+        lifeCycleHandler = new LifeCycleHandler();
+        new FloatViewHandler().listen();
         FFMpegInstaller.installAsync(getApplicationContext());
+    }
+
+    private class FloatViewHandler {
+
+        FloatViewHandler() {
+            if (SettingsProvider.get().getBoolean(SettingsProvider.Key.FLOAT_WINDOW)) {
+                new FloatingControllerServiceProxy(getApplicationContext())
+                        .start(getApplicationContext());
+            }
+        }
+
+        void listen() {
+            SettingsProvider.get().addObserver(new Observer() {
+                @Override
+                public void update(Observable observable, Object o) {
+                    if (o == SettingsProvider.Key.FLOAT_WINDOW) {
+                        boolean show = SettingsProvider.get().getBoolean(SettingsProvider.Key.FLOAT_WINDOW);
+                        if (show) {
+                            new FloatingControllerServiceProxy(getApplicationContext()).start(getApplicationContext());
+                        } else {
+                            new FloatingControllerServiceProxy(getApplicationContext()).stop(getApplicationContext());
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    private class LifeCycleHandler {
+
+        @Getter
+        @Setter
+        Activity topActivity;
+
+        LifeCycleHandler() {
+            registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+                @Override
+                public void onActivityCreated(Activity activity, Bundle bundle) {
+
+                }
+
+                @Override
+                public void onActivityStarted(Activity activity) {
+
+                }
+
+                @Override
+                public void onActivityResumed(Activity activity) {
+                    setTopActivity(activity);
+                }
+
+                @Override
+                public void onActivityPaused(Activity activity) {
+
+                }
+
+                @Override
+                public void onActivityStopped(Activity activity) {
+
+                }
+
+                @Override
+                public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
+
+                }
+
+                @Override
+                public void onActivityDestroyed(Activity activity) {
+
+                }
+            });
+        }
     }
 
     private class WatcherProxy extends WatcherAdapter {
@@ -46,6 +130,9 @@ public class TorScreenRecApp extends Application {
         final List<IWatcher> watchers = Lists.newArrayList();
 
         AtomicBoolean ready;
+
+        @Getter
+        AtomicBoolean recording = new AtomicBoolean(false);
 
         WatcherProxy() {
             try {
@@ -69,6 +156,21 @@ public class TorScreenRecApp extends Application {
                 watchers.remove(watcher);
                 watchers.add(watcher);
             }
+
+            // Send sticky event.
+            if (recording.get()) {
+                try {
+                    watcher.onStart();
+                } catch (RemoteException e) {
+                    Logger.e(e, "WatcherProxy: Error call onStart");
+                }
+            } else {
+                try {
+                    watcher.onStop();
+                } catch (RemoteException e) {
+                    Logger.e(e, "WatcherProxy: Error call onStop");
+                }
+            }
         }
 
         public void unWatch(IWatcher watcher) {
@@ -80,6 +182,8 @@ public class TorScreenRecApp extends Application {
         @Override
         public void onStart() throws RemoteException {
             super.onStart();
+
+            recording.set(true);
 
             synchronized (watchers) {
                 Collections.consumeRemaining(Lists.newArrayList(watchers),
@@ -104,6 +208,8 @@ public class TorScreenRecApp extends Application {
         @Override
         public void onStop() throws RemoteException {
             super.onStop();
+
+            recording.set(false);
 
             synchronized (watchers) {
                 Collections.consumeRemaining(Lists.newArrayList(watchers),

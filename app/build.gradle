@@ -48,4 +48,7 @@ dependencies {
 
     // https://github.com/javiersantos/MaterialStyledDialogs
     compile 'com.github.javiersantos:MaterialStyledDialogs:2.1'
+
+    // https://github.com/czy1121/settingscompat
+    compile 'com.github.czy1121:settingscompat:1.1.4'
 }

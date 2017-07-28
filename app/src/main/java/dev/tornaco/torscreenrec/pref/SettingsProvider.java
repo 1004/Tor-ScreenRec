@@ -8,6 +8,7 @@ import java.util.Observable;
 import dev.nick.library.AudioSource;
 import dev.nick.library.Orientations;
 import dev.nick.library.ValidResolutions;
+import dev.tornaco.torscreenrec.control.FloatControlTheme;
 import lombok.Getter;
 
 /**
@@ -26,6 +27,9 @@ public class SettingsProvider extends Observable {
         WITH_AUDIO(false),
         SHUTTER_SOUND(false),
         SHAKE_STOP(false),
+        FLOAT_WINDOW(false),
+        FLOAT_WINDOW_ALPHA(50),
+        FLOAT_WINDOW_THEME(FloatControlTheme.DefaultDark.name()),
         SCREEN_OFF_STOP(false),
         FAME_RATE(30),
         RESOLUTION(ValidResolutions.DESC[ValidResolutions.INDEX_MASK_AUTO]),
