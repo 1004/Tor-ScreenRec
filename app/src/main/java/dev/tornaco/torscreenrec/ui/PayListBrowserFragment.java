@@ -82,6 +82,7 @@ public class PayListBrowserFragment extends Fragment {
                 new PayExtraLoader.Callback() {
                     @Override
                     public void onError(final Throwable e) {
+                        if (getActivity() == null) return;
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -93,7 +94,7 @@ public class PayListBrowserFragment extends Fragment {
 
                     @Override
                     public void onSuccess(final List<PayExtra> extras) {
-
+                        if (getActivity() == null) return;
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

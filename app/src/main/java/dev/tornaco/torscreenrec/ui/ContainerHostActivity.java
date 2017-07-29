@@ -64,6 +64,9 @@ public class ContainerHostActivity extends TransitionSafeActivity {
         if (PayListBrowserFragment.class.getName().equals(clz)) {
             return new PayListBrowserFragment();
         }
+        if (AboutFragment.class.getName().equals(clz)) {
+            return new AboutFragment();
+        }
         return null;
     }
 

@@ -19,6 +19,7 @@ import java.util.List;
 
 import dev.tornaco.torscreenrec.common.SharedExecutor;
 import dev.tornaco.torscreenrec.pref.SettingsProvider;
+import dev.tornaco.torscreenrec.ui.AboutFragment;
 import dev.tornaco.torscreenrec.ui.ContainerHostActivity;
 import dev.tornaco.torscreenrec.ui.FragmentController;
 import dev.tornaco.torscreenrec.ui.ScreenCastFragment;
@@ -122,6 +123,12 @@ public class DrawerNavigatorActivity extends AppCompatActivity
                 }, 300);
                 break;
             case R.id.nav_about:
+                SharedExecutor.runOnUIThreadDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(ContainerHostActivity.getIntent(getApplicationContext(), AboutFragment.class));
+                    }
+                }, 300);
                 break;
         }
 

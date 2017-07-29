@@ -156,4 +156,12 @@
     <string name="title_pay_list">Thank list</string>
     <string name="title_thanks">Thank</string>
     <string name="title_pay_status_paid">I have paid</string>
+    <string name="tornaco">Tornaco</string>
+    <string name="tornaco_intro">Android framework developer, works with Telephony, Audio, AppOps, PMS etc. App development is just for fun.</string>
+    <string name="title_version">App version</string>
+    <string name="me">Me</string>
+    <string name="app">App</string>
+    <string name="open_source">Open source</string>
+    <string name="title_email">Email</string>
+    <string name="release">Releases</string>
 </resources>

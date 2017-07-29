@@ -40,7 +40,7 @@ public class InstallFragment extends DashboardFragment {
         Category categoryMagisk = new Category();
         categoryMagisk.addTile(new MagiskInstallTile(getContext()));
 
-        categories.add(category);
+        // categories.add(category);
         categories.add(categoryRoot);
         categories.add(categoryXposed);
         categories.add(categoryMagisk);
