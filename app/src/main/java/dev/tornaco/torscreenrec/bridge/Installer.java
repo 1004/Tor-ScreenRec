@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import dev.nick.library.BridgeManager;
 import dev.tornaco.torscreenrec.util.MediaTools;
 import dev.tornaco.torscreenrec.util.ThreadUtil;
 
@@ -60,7 +61,7 @@ public class Installer {
         ThreadUtil.newThread(new Runnable() {
             @Override
             public void run() {
-                boolean isPlatform = false;
+                boolean isPlatform = BridgeManager.getInstance().isInstalledInSystem(context);
                 if (isPlatform) {
                     unInstallWithRoot(call);
                 } else {

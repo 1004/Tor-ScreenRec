@@ -20,7 +20,7 @@ import dev.tornaco.torscreenrec.pref.SettingsProvider;
 public class RecRequestHandler {
 
     public static boolean start(final Context context) {
-        boolean isPlatformBridge = false;
+        boolean isPlatformBridge = BridgeManager.getInstance().isInstalledInSystem(context);
         SettingsProvider settingsProvider = SettingsProvider.get();
         try {
             RecBridgeServiceProxy.from(context)

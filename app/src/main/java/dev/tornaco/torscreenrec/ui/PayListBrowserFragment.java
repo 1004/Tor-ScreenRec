@@ -15,14 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-
-import org.newstand.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +84,6 @@ public class PayListBrowserFragment extends Fragment {
                             @Override
                             public void run() {
                                 swipeRefreshLayout.setRefreshing(false);
-                                Toast.makeText(getContext(), Logger.getStackTraceString(e), Toast.LENGTH_LONG).show();
                             }
                         });
                     }
