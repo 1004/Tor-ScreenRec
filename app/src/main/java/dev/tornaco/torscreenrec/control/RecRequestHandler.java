@@ -5,6 +5,7 @@ import android.os.RemoteException;
 
 import org.newstand.logger.Logger;
 
+import dev.nick.library.BridgeManager;
 import dev.nick.library.IParam;
 import dev.nick.library.RecBridgeServiceProxy;
 import dev.nick.library.TokenAdapter;
@@ -19,6 +20,7 @@ import dev.tornaco.torscreenrec.pref.SettingsProvider;
 public class RecRequestHandler {
 
     public static boolean start(final Context context) {
+        boolean isPlatformBridge = false;
         SettingsProvider settingsProvider = SettingsProvider.get();
         try {
             RecBridgeServiceProxy.from(context)
@@ -28,7 +30,7 @@ public class RecRequestHandler {
                                     .orientation(settingsProvider.getInt(SettingsProvider.Key.ORIENTATION))
                                     .resolution(settingsProvider.getString(SettingsProvider.Key.RESOLUTION))
                                     .stopOnScreenOff(settingsProvider.getBoolean(SettingsProvider.Key.SCREEN_OFF_STOP))
-                                    .useMediaProjection(settingsProvider.getBoolean(SettingsProvider.Key.USER_PROJECTION))
+                                    .useMediaProjection(!isPlatformBridge)
                                     .stopOnShake(settingsProvider.getBoolean(SettingsProvider.Key.SHAKE_STOP))
                                     .shutterSound(settingsProvider.getBoolean(SettingsProvider.Key.SHUTTER_SOUND))
                                     .path(SettingsProvider.get().createVideoFilePath())

@@ -1,14 +1,21 @@
 package dev.tornaco.torscreenrec.bridge;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
+import android.net.Uri;
 
 import com.google.common.io.Files;
 import com.stericson.rootools.RootTools;
 
+import org.newstand.logger.Logger;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+
+import dev.tornaco.torscreenrec.util.MediaTools;
+import dev.tornaco.torscreenrec.util.ThreadUtil;
 
 /**
  * Created by Tornaco on 2017/7/25.
@@ -17,7 +24,10 @@ import java.io.InputStream;
 
 public class Installer {
 
-    private static final String PATH = "app-debug-signed.apk";
+    public static final String BRIDGE_PACKAGE_NAME = "dev.nick.systemrecapi";
+
+    private static final String SRC_PATH_PLATFORM = "app-release-platform.apk";
+    private static final String SRC_PATH_TORNACO = "app-release.apk";
     private static final String TMP_APK_NAME = "tmp.apk";
     private static final String DEST_PATH = "/system/app/RecBridge.apk";
     private static final String DEST_PATH_V2 = "/system/app/RecBridge/RecBridge.apk";
@@ -28,29 +38,82 @@ public class Installer {
         void onFailure(Throwable throwable, String errTitle);
     }
 
-    public static void installAsync(final Context context, final Callback call) {
+    public static void installWithRootAsync(final Context context, final Callback call) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                install(context, call);
+                installWithRoot(context, call);
             }
         }).start();
     }
 
-    public static void unInstallAsync(final Callback call) {
+    public static void installWithIntentAsync(final Context context, final Callback call) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                unInstall(call);
+                installWithIntent(context, call);
             }
         }).start();
     }
 
-    public static void install(Context context, Callback callback) {
-        install(context, DEST_PATH_V2, callback);
+    public static void unInstallAsync(final Context context, final Callback call) {
+        ThreadUtil.newThread(new Runnable() {
+            @Override
+            public void run() {
+                boolean isPlatform = false;
+                if (isPlatform) {
+                    unInstallWithRoot(call);
+                } else {
+                    unInstallWithIntent(context);
+                    call.onSuccess();
+                }
+            }
+        }).start();
     }
 
-    public static void install(Context context, String to, Callback callback) {
+    private static void unInstallWithIntent(Context context) {
+        Uri packageURI = Uri.parse("package:" + BRIDGE_PACKAGE_NAME);
+        Intent uninstallIntent = new Intent(Intent.ACTION_DELETE, packageURI);
+        uninstallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(uninstallIntent);
+    }
+
+    private static void installWithRoot(final Context context, final Callback callback) {
+        String from = extractFromAssets(context, SRC_PATH_PLATFORM);
+        if (from == null) {
+            callback.onFailure(new Throwable(), "Copy to tmp fail");
+            return;
+        }
+        installWithRoot(context, from, DEST_PATH_V2, callback);
+    }
+
+    private static void installWithIntent(final Context context, Callback callback) {
+        String from = extractFromAssets(context, SRC_PATH_TORNACO);
+        if (from == null) {
+            callback.onFailure(new Throwable(), "Copy to tmp fail");
+            return;
+        }
+        installWithIntent(context, from, callback);
+    }
+
+    private static void installWithIntent(Context context, String from, Callback callback) {
+        Logger.d("installWithIntent: %s", from);
+        context.startActivity(MediaTools.buildInstallIntent(context, new File(from)));
+        callback.onSuccess();
+    }
+
+    private static String extractFromAssets(Context context, String name) {
+        String tmpPath = Files.createTempDir().getPath() + File.separator + TMP_APK_NAME;
+        try {
+            copy(context, name, tmpPath);
+        } catch (IOException e) {
+            Logger.e(e, "Copy tmp file fail");
+            return null;
+        }
+        return tmpPath;
+    }
+
+    private static void installWithRoot(Context context, String from, String to, Callback callback) {
 
         if (!RootTools.isRootAvailable()) {
             callback.onFailure(new Throwable(), "Root not available");
@@ -58,7 +121,7 @@ public class Installer {
         }
 
         // Try uninstall old version.
-        unInstall(DEST_PATH, new Callback() {
+        unInstallWithRoot(DEST_PATH, new Callback() {
             @Override
             public void onSuccess() {
 
@@ -70,32 +133,35 @@ public class Installer {
             }
         });
 
-        String tmpPath = Files.createTempDir().getPath() + File.separator + TMP_APK_NAME;
-        try {
-            copy(context, PATH, tmpPath);
-        } catch (IOException e) {
-            callback.onFailure(e, "Copy tmp file fail");
-            return;
-        }
-
         // Create dir.
         if (!RootTools.mkdir(new File(DEST_PATH_V2).getParent(), true, 755)) {
             callback.onFailure(new Throwable(), "Fail mkdir in system");
             return;
         }
 
-        if (!RootTools.copyFile(tmpPath, to, true, true)) {
+        if (!RootTools.copyFile(from, to, true, true)) {
             callback.onFailure(new Throwable(), "Fail copy to system");
             return;
         }
         callback.onSuccess();
     }
 
-    public static void unInstall(Callback callback) {
-        unInstall(DEST_PATH_V2, callback);
+    private static void unInstallWithRoot(Callback callback) {
+        unInstallWithRoot(DEST_PATH, new Callback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailure(Throwable throwable, String errTitle) {
+
+            }
+        });
+        unInstallWithRoot(DEST_PATH_V2, callback);
     }
 
-    public static void unInstall(String path, Callback callback) {
+    private static void unInstallWithRoot(String path, Callback callback) {
         boolean ok = RootTools.deleteFileOrDirectory(path, true);
         if (ok) {
             callback.onSuccess();

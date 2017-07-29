@@ -34,6 +34,23 @@ public abstract class MediaTools {
         }
     }
 
+    public static Intent buildInstallIntent(Context context, File file) {
+
+        Intent open = new Intent(Intent.ACTION_VIEW);
+        Uri contentUri;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            open.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
+
+        } else {
+            contentUri = Uri.parse("file://" + file.getAbsolutePath());
+        }
+        open.setDataAndType(contentUri, "application/vnd.android.package-archive");
+        open.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return open;
+    }
+
     public static Intent buildOpenIntent(Context context, File imageFile) {
 
         Intent open = new Intent(Intent.ACTION_VIEW);

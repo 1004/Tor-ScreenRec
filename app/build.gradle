@@ -50,17 +50,16 @@ dependencies {
     apt "org.projectlombok:lombok:1.16.16"
     provided 'org.projectlombok:lombok:1.16.16'
     compile 'com.google.guava:guava:20.0'
+    compile 'com.google.code.gson:gson:2.7'
     compile project(':roottools')
     compile 'com.github.Tornaco:Logger:1.1.2'
-    compile 'com.github.Tornaco:SystemRecApi:Dev-8'
+    compile 'com.github.Tornaco:SystemRecApi:v1.3'
     compile project(':tiles')
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.0.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-
-    compile 'com.github.Tornaco:FFMpeg-Android-Java:1.0-BETA'
 
     // https://github.com/javiersantos/MaterialStyledDialogs
     compile 'com.github.javiersantos:MaterialStyledDialogs:2.1'
@@ -69,4 +68,6 @@ dependencies {
     compile 'com.github.czy1121:settingscompat:1.1.4'
 
     compile 'com.nononsenseapps:filepicker:4.1.0'
+
+    compile 'com.koushikdutta.async:androidasync:2.1.9'
 }

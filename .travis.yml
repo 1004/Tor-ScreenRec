@@ -28,7 +28,7 @@ deploy:
   api_key:
     secure: MTQrVyM859OHwOTSBGzatfCPrgXAyaLz3uMk8q89K0Le6SmQuZ+KcCZNI2ktO4W88cVttNVQrto+FahYL/xSanFTdcwvC3i+++x/EI2o+zBa0WqOVK3VI1+tYeUm3Cu5pkYF5PqTUkaERSLiNDP8KEcnsIOpOAHxz7EAun49EYKNGIiVi+xx+404HI0s9A5XgImooSRSWVo8v+A8zBj4GyRNh2cRzK87Q98BXaj626pW+MIra5N6fY61W5PH0ggtQ2HSJWsveqL5IjuklkerSX4FglGYAh1RU/E20AuBac8+AGDZspV1Pr/ZyYXZ/Z1XU+/JzA/O2SF9xQrbYBF+z5tUnoo7sQoL4OPRBIuIkIbVhf9Vcsn6lbZVh/55baLXwNE6VD6bRxW1e/uubI2d57CSonsk+5PHR69amAyDEp3zbII80osQ6JbY8AbY1xwPlVD/MsRyyMmwKntt6wv7OIlaTHcwQK/71X51Hm2j6cvolK2jtMYB1LfkmB7eIzlNfB3qGx+ex0q6D3jC3Tvhl5EI+fEjelz84x0s3eTv0YVCElIeK3v8ROkTrKNsmvvNMFswpdSIVsYQFL68KSGxMa6hUsgAYOAqM4yOgKRVdl3WOG1hlUSkQsx9TWgF3u2cqOm+Ig+M8V+E3iQYymk0eRxkycREjQE2qtUcGiRt8Cs=
   file: app/build/outputs/apk/app-release.apk
-  skip_cleanup: true
+    skip_cleanup: true
   on:
     repo: Tornaco/Tor-ScreenRec
     tags: true

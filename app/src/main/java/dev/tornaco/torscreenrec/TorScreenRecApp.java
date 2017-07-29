@@ -23,7 +23,6 @@ import dev.tornaco.torscreenrec.common.Collections;
 import dev.tornaco.torscreenrec.common.Consumer;
 import dev.tornaco.torscreenrec.control.FloatingControllerServiceProxy;
 import dev.tornaco.torscreenrec.pref.SettingsProvider;
-import dev.tornaco.torscreenrec.util.FFMpegInstaller;
 import dev.tornaco.torscreenrec.util.ThreadUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -54,7 +53,6 @@ public class TorScreenRecApp extends Application {
         watcherProxy = new WatcherProxy();
         lifeCycleHandler = new LifeCycleHandler();
         new FloatViewHandler().listen();
-        FFMpegInstaller.installAsync(getApplicationContext());
     }
 
     private class FloatViewHandler {

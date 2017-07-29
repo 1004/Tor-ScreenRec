@@ -55,6 +55,15 @@ public class ContainerHostActivity extends TransitionSafeActivity {
         if (SettingsFragment.class.getName().equals(clz)) {
             return new SettingsFragment();
         }
+        if (InstallFragment.class.getName().equals(clz)) {
+            return new InstallFragment();
+        }
+        if (ShopFragment.class.getName().equals(clz)) {
+            return new ShopFragment();
+        }
+        if (PayListBrowserFragment.class.getName().equals(clz)) {
+            return new PayListBrowserFragment();
+        }
         return null;
     }
 

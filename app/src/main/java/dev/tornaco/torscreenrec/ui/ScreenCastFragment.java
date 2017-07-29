@@ -35,6 +35,7 @@ import dev.tornaco.torscreenrec.bridge.Installer;
 import dev.tornaco.torscreenrec.common.SharedExecutor;
 import dev.tornaco.torscreenrec.control.RecRequestHandler;
 import dev.tornaco.torscreenrec.pref.SettingsProvider;
+import dev.tornaco.torscreenrec.ui.tiles.AdTile;
 import dev.tornaco.torscreenrec.ui.tiles.AudioSourceTile;
 import dev.tornaco.torscreenrec.ui.tiles.FlowViewTile;
 import dev.tornaco.torscreenrec.ui.tiles.MoreSettingsTile;
@@ -147,6 +148,12 @@ public class ScreenCastFragment extends DashboardFragment {
         quickFunc.titleRes = R.string.quick_function;
         quickFunc.addTile(new RecordingBrowserTile(getContext()));
 
+        Category ad = new Category();
+        if (!SettingsProvider.get().getBoolean(SettingsProvider.Key.PAID)) {
+            ad.titleRes = R.string.title_ad_area;
+            ad.addTile(new AdTile(getContext()));
+        }
+
         Category quickSettings = new Category();
         quickSettings.titleRes = R.string.quick_settings;
         quickSettings.addTile(new AudioSourceTile(getContext()));
@@ -158,6 +165,7 @@ public class ScreenCastFragment extends DashboardFragment {
         moreSettings.addTile(new MoreSettingsTile(getContext()));
 
         categories.add(quickFunc);
+        categories.add(ad);
         categories.add(quickSettings);
         categories.add(moreSettings);
     }
@@ -170,6 +178,17 @@ public class ScreenCastFragment extends DashboardFragment {
     @SuppressWarnings("unchecked")
     protected <T extends View> T findView(View root, @IdRes int idRes) {
         return (T) root.findViewById(idRes);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                setupView();
+            }
+        });
     }
 
     protected void setupView() {
@@ -243,6 +262,7 @@ public class ScreenCastFragment extends DashboardFragment {
         }
     }
 
+
     private void updateCardStatus(String title) {
         final TextView textView = findView(R.id.bridge_status);
         textView.setText(title);
@@ -275,42 +295,13 @@ public class ScreenCastFragment extends DashboardFragment {
         final ProgressDialog p = new ProgressDialog(getActivity());
         p.setIndeterminate(true);
         if (install) {
-            p.setMessage(getString(R.string.installing));
-            p.setCancelable(false);
-            p.show();
-
-            Installer.installAsync(getContext(), new Installer.Callback() {
-                @Override
-                public void onSuccess() {
-                    p.dismiss();
-                    Snackbar.make(view, R.string.install_success, Snackbar.LENGTH_INDEFINITE)
-                            .setAction(R.string.restart, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    RootTools.restartAndroid();
-                                }
-                            }).show();
-                }
-
-                @Override
-                public void onFailure(Throwable throwable, String errTitle) {
-                    p.dismiss();
-                    Snackbar.make(view, getString(R.string.install_fail, errTitle),
-                            Snackbar.LENGTH_LONG)
-                            .setAction(R.string.report, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-
-                                }
-                            }).show();
-                }
-            });
+            startActivity(ContainerHostActivity.getIntent(getContext(), InstallFragment.class));
         } else {
             p.setMessage(getString(R.string.uninstalling));
             p.setCancelable(false);
             p.show();
 
-            Installer.unInstallAsync(new Installer.Callback() {
+            Installer.unInstallAsync(getContext(), new Installer.Callback() {
                 @Override
                 public void onSuccess() {
                     p.dismiss();

@@ -126,4 +126,30 @@
     <string name="theme_def_dark">默认-黑</string>
     <string name="theme_def_circle">默认-圆</string>
     <string name="title_more_settings">更多设置</string>
+    <string name="title_normal_install">普通安装</string>
+    <string name="summary_normal_install">以普通app的方式安装，无需Root，没有ROM版本限制，但是会丧失录制内置音源（submix）的功能。包括其他功能系统权限相关的功能也会因此而打折。</string>
+    <string name="title_install_type">安装方式</string>
+    <string name="title_root_install">以Root安装</string>
+    <string name="summary_root_install">最完美的安装方式，你可以使用所有的功能。 \n\n很遗憾的是目前我们这种方式只支持类AOSP ROM，也就是非手机发售厂商编译的ROM，例如LOS，RR，Mokee，Soda等。或者关闭了“系统签名验证”的ROM。 \n\n请自行检查自己的ROM是否符合要求，当然，如果安装失败也没什么大不了，你可以选择卸载。</string>
+    <string name="title_xposed_install">借助Xposed安装</string>
+    <string name="summary_xposed_install">后续支持</string>
+    <string name="title_magisk_install">借助Magisk安装</string>
+    <string name="summary_magisk_install">暂不支持</string>
+    <string name="title_install_recommend">推荐</string>
+    <string name="title_about">关于</string>
+    <string name="title_buy">自助捐赠</string>
+    <string name="title_ad">模拟广告位</string>
+    <string name="title_ad_area">广告区域</string>
+    <string name="summary_buy_intro">如果你喜欢我们的作品，为了鼓励我们更好的开发，请自行点击下方链接查看二维码，自主捐赠本应用，金额请随意。我们不会强制你购买或者强制显示广告，你也可以在不购买的情况下使用。
+        \n\n请在支付时加上你的昵称信息，以及你要发布的一些随意的说明文字，不可超过30字。
+        \n\n点击"我已经捐赠"可以关闭模拟广告。</string>
+    <string name="title_alipay">支付宝</string>
+    <string name="title_wechat">微信</string>
+    <string name="done">完成</string>
+    <string name="save_qr_code">保存二维码</string>
+    <string name="save_by_screenshot">请截图保存</string>
+    <string name="title_pay_ment_type">支付方式</string>
+    <string name="title_pay_list">感谢名单</string>
+    <string name="title_thanks">贡献人员</string>
+    <string name="title_pay_status_paid">我已经捐赠</string>
 </resources>

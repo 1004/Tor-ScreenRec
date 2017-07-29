@@ -31,6 +31,7 @@ public class SettingsProvider extends Observable {
 
     public enum Key {
         USR_NAME("Fake.Name"),
+        PAID(false),
         VIDEO_ROOT_PATH(getDefaultVideoRootPath()),
         AUDIO_SOURCE(AudioSource.NOOP),
         WITH_AUDIO(false),

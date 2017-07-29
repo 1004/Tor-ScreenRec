@@ -11,9 +11,14 @@
     <item android:title="@string/others">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/share" />
+                android:id="@+id/nav_shop"
+                android:icon="@drawable/ic_shop_black_24dp"
+                android:title="@string/title_buy" />
+
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_info_black_24dp"
+                android:title="@string/title_about" />
         </menu>
     </item>
 

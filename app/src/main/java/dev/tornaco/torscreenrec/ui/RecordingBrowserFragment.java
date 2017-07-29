@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -26,14 +25,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
-import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
-import com.github.hiteshsondhi88.libffmpeg.FFmpegExecuteResponseHandler;
-import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -339,61 +334,61 @@ public class RecordingBrowserFragment extends Fragment {
             p.setCancelable(false);
             p.setIndeterminate(true);
 
-            try {
-                FFmpeg.getInstance(getContext()).execute(commands,
-                        new FFmpegExecuteResponseHandler() {
-                    @Override
-                    public void onSuccess(String message) {
-                        Logger.d(message);
-                        Snackbar.make(mRecyclerView, getString(R.string.result_to_gif_ok, dest),
-                                Snackbar.LENGTH_INDEFINITE)
-                                .setAction(android.R.string.ok, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-
-                                    }
-                                })
-                                .show();
-                    }
-
-                    @Override
-                    public void onProgress(String message) {
-                        p.setMessage(message);
-                        Logger.d(message);
-                    }
-
-                    @Override
-                    public void onFailure(final String message) {
-                        Logger.d(message);
-                        Snackbar.make(mRecyclerView, getString(R.string.result_to_gif_fail), Snackbar.LENGTH_INDEFINITE)
-                                .setAction(android.R.string.ok, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        new AlertDialog.Builder(getContext())
-                                                .setMessage(message)
-                                                .setTitle(R.string.result_to_gif_fail)
-                                                .setCancelable(false)
-                                                .setPositiveButton(android.R.string.ok, null)
-                                                .create()
-                                                .show();
-                                    }
-                                })
-                                .show();
-                    }
-
-                    @Override
-                    public void onStart() {
-                        p.show();
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        p.dismiss();
-                    }
-                });
-            } catch (FFmpegCommandAlreadyRunningException e) {
-                Toast.makeText(getContext(), "FFmpegCommandAlreadyRunningException", Toast.LENGTH_LONG).show();
-            }
+//            try {
+//                FFmpeg.getInstance(getContext()).execute(commands,
+//                        new FFmpegExecuteResponseHandler() {
+//                    @Override
+//                    public void onSuccess(String message) {
+//                        Logger.d(message);
+//                        Snackbar.make(mRecyclerView, getString(R.string.result_to_gif_ok, dest),
+//                                Snackbar.LENGTH_INDEFINITE)
+//                                .setAction(android.R.string.ok, new View.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(View v) {
+//
+//                                    }
+//                                })
+//                                .show();
+//                    }
+//
+//                    @Override
+//                    public void onProgress(String message) {
+//                        p.setMessage(message);
+//                        Logger.d(message);
+//                    }
+//
+//                    @Override
+//                    public void onFailure(final String message) {
+//                        Logger.d(message);
+//                        Snackbar.make(mRecyclerView, getString(R.string.result_to_gif_fail), Snackbar.LENGTH_INDEFINITE)
+//                                .setAction(android.R.string.ok, new View.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(View v) {
+//                                        new AlertDialog.Builder(getContext())
+//                                                .setMessage(message)
+//                                                .setTitle(R.string.result_to_gif_fail)
+//                                                .setCancelable(false)
+//                                                .setPositiveButton(android.R.string.ok, null)
+//                                                .create()
+//                                                .show();
+//                                    }
+//                                })
+//                                .show();
+//                    }
+//
+//                    @Override
+//                    public void onStart() {
+//                        p.show();
+//                    }
+//
+//                    @Override
+//                    public void onFinish() {
+//                        p.dismiss();
+//                    }
+//                });
+//            } catch (FFmpegCommandAlreadyRunningException e) {
+//                Toast.makeText(getContext(), "FFmpegCommandAlreadyRunningException", Toast.LENGTH_LONG).show();
+//            }
         }
     }
 }

@@ -17,9 +17,12 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
+import dev.tornaco.torscreenrec.common.SharedExecutor;
 import dev.tornaco.torscreenrec.pref.SettingsProvider;
+import dev.tornaco.torscreenrec.ui.ContainerHostActivity;
 import dev.tornaco.torscreenrec.ui.FragmentController;
 import dev.tornaco.torscreenrec.ui.ScreenCastFragment;
+import dev.tornaco.torscreenrec.ui.ShopFragment;
 import dev.tornaco.torscreenrec.ui.widget.RecordingButton;
 import lombok.Getter;
 
@@ -98,7 +101,6 @@ public class DrawerNavigatorActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -110,6 +112,16 @@ public class DrawerNavigatorActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_cast:
                 getCardController().setCurrent(INDEX_SCREEN_CAST);
+                break;
+            case R.id.nav_shop:
+                SharedExecutor.runOnUIThreadDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                       startActivity(ContainerHostActivity.getIntent(getApplicationContext(), ShopFragment.class));
+                    }
+                }, 300);
+                break;
+            case R.id.nav_about:
                 break;
         }
 

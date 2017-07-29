@@ -29,6 +29,7 @@
         android:title="@string/action_rename" />
     <item
         android:id="@+id/action_togif"
+        android:visible="false"
         android:title="@string/action_togif" />
     <item
         android:id="@+id/action_share"
