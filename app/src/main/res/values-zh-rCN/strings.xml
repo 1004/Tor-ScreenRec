@@ -5,8 +5,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">设置</string>
-    <string name="title_bridge_status">录制管理器</string>
-    <string name="bridge_intro"><b>录制管理器</b>是安装在System分区下的一个应用框架，该框架可以帮助我们实现无缝的内容或者声音录制，在开始录制内容之前，请安装该框架。</string>
+    <string name="title_bridge_status">管理器</string>
+    <string name="bridge_intro"><b>录制管理器</b>是安装在<i>Data</i>或者<i>System</i>分区下的一个应用框架，该框架可以帮助我们实现快速无缝的内容以及者声音（<i>Root</i>版本包括<i>r_Submix</i>音源）录制，在开始录制内容之前，请先安装该框架。
+    \n\n注意：如果你选择<i>r_Submix</i>音源，录制过程中手机媒体通道会转到录制频道上，因此录制过程中你可能听不到设备的声音。
+    </string>
     <string name="title_install">立即安装</string>
     <string name="title_uninstall">卸载</string>
     <string name="screen_cast">录制</string>
@@ -23,7 +25,7 @@
     <string name="recorder_description">我是说明</string>
     <string name="remote_err">远程错误</string>
     <string name="installed_version_name">已安装<i>%1$s</i></string>
-    <string name="bridge_uninstalled">录制管理器<i>未安装</i></string>
+    <string name="bridge_not_installed"><i>未安装</i></string>
     <string name="title_audio_source">音源</string>
     <string name="audio_source_noop">无</string>
     <string name="audio_source_mic">Mic</string>

@@ -24,7 +24,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import dev.nick.library.BridgeManager;
 import dev.nick.library.IWatcher;
-import dev.nick.library.RecBridgeServiceProxy;
 import dev.nick.library.WatcherAdapter;
 import dev.nick.tiles.tile.Category;
 import dev.nick.tiles.tile.DashboardFragment;
@@ -106,7 +105,7 @@ public class ScreenCastFragment extends DashboardFragment {
                 isRecording.set(true);
             }
             refreshFabState();
-            Logger.i("onStop");
+            Logger.i("onStart");
         }
 
         @Override
@@ -203,7 +202,8 @@ public class ScreenCastFragment extends DashboardFragment {
         ImageView statusView = findView(R.id.icon1);
         statusView.setColorFilter(ContextCompat.getColor(getContext(),
                 installed ? R.color.green : R.color.red));
-        statusView.setImageResource(installed ? R.drawable.ic_check_circle_black_24dp : R.drawable.ic_info_black_24dp);
+        statusView.setImageResource(installed ? R.drawable.ic_check_circle_black_24dp
+                : R.drawable.ic_remove_circle_black_24dp);
 
         DrawerNavigatorActivity drawerNavigatorActivity = (DrawerNavigatorActivity) getActivity();
         floatingActionButton = drawerNavigatorActivity.getFloatingActionButton();
@@ -238,14 +238,16 @@ public class ScreenCastFragment extends DashboardFragment {
             SharedExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    String name = getAppContext().getString(R.string.version_name_unknown);
-                    try {
-                        name = RecBridgeServiceProxy.from(getContext().getApplicationContext())
-                                .getVersionName();
-                    } catch (RemoteException e) {
-                        Logger.e("e", "Fail get version name");
-                    }
-                    final String versionNameMessage = getAppContext().getString(R.string.installed_version_name, name);
+                    String name = BridgeManager.getInstance().getVersionName(getContext());
+                    if (name == null)
+                        name = getAppContext().getString(R.string.version_name_unknown);
+
+                    boolean isPlatform = BridgeManager.getInstance().isInstalledInSystem(getContext());
+
+                    final String versionNameMessage =
+                            isPlatform
+                                    ? getAppContext().getString(R.string.installed_version_name, name + "-Root")
+                                    : getAppContext().getString(R.string.installed_version_name, name);
 
                     if (getActivity() == null) return;
 
@@ -258,7 +260,7 @@ public class ScreenCastFragment extends DashboardFragment {
                 }
             });
         } else {
-            updateCardStatus(getAppContext().getString(R.string.bridge_uninstalled));
+            updateCardStatus(getAppContext().getString(R.string.bridge_not_installed));
         }
     }
 

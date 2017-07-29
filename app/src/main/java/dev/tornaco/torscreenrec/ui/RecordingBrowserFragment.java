@@ -307,7 +307,7 @@ public class RecordingBrowserFragment extends Fragment {
                                             new String[]{to.getAbsolutePath()}, null,
                                             new MediaScannerConnection.OnScanCompletedListener() {
                                                 public void onScanCompleted(String path, Uri uri) {
-                                                    //FIXME.
+                                                    startLoading();
                                                 }
                                             });
                                 }

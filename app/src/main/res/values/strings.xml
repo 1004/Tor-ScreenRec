@@ -6,8 +6,8 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_need_help">Need help?</string>
-    <string name="title_bridge_status">Bridge status</string>
-    <string name="bridge_intro"><b>Screen recording bridge</b> is an app installed into System with Root permission, we need to install this bridge before start recording anyway</string>
+    <string name="title_bridge_status">Bridge</string>
+    <string name="bridge_intro"><b>录制管理器</b>是安装在Data或者System分区下的一个应用框架，该框架可以帮助我们实现快速无缝的内容以及者声音（Root版本包括r_Submix音源）录制，在开始录制内容之前，请先安装该框架。</string>
     <string name="title_install">Install</string>
     <string name="title_uninstall">Uninstall</string>
     <string name="screen_cast">Screen cast</string>
@@ -25,7 +25,7 @@
     <string name="remote_err">Remote error</string>
     <string name="version_name_unknown">Unknown</string>
     <string name="installed_version_name">Installed version <i>%1$s</i></string>
-    <string name="bridge_uninstalled">RecBridge <i>Not installed</i></string>
+    <string name="bridge_not_installed">RecBridge <i>Not installed</i></string>
     <string name="title_audio_source">Audio source</string>
     <string name="audio_source_noop">Noop</string>
     <string name="audio_source_mic">Mic</string>
