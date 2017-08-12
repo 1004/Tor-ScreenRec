@@ -212,12 +212,9 @@ public class ScreenCastFragment extends DashboardFragment {
             }
         });
 
-        Button button = findView(R.id.button);
-
         // Read status.
         BridgeManager bridgeManager = BridgeManager.getInstance();
         final boolean installed = bridgeManager.isInstalled(getContext());
-        button.setText(installed ? R.string.title_uninstall : R.string.title_bridge_manager);
 
         ImageView statusView = findView(R.id.icon1);
 //        statusView.setColorFilter(ContextCompat.getColor(getContext(),
