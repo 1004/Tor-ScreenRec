@@ -19,12 +19,17 @@ public class MagiskInstallTile extends QuickTile {
 
         this.titleRes = R.string.title_magisk_install;
         this.summaryRes = R.string.summary_magisk_install;
-        this.iconRes = R.drawable.ic_mood_bad_black_24dp;
+        this.iconRes = R.mipmap.avatar_magisk;
 
         this.tileView = new QuickTileView(context, this) {
             @Override
             public void onClick(View v) {
                 super.onClick(v);
+            }
+
+            @Override
+            protected boolean useStaticTintColor() {
+                return false;
             }
         };
     }

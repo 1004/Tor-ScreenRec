@@ -16,8 +16,8 @@
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="nav_header_avatar_size">72dp</dimen>
 
-    <dimen name="card_radius">0dp</dimen>
-    <dimen name="card_elevation">1dp</dimen>
+    <dimen name="card_radius">2dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
 
     <dimen name="thumbnail_size">42dp</dimen>
 

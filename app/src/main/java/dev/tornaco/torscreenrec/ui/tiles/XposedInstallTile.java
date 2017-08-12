@@ -19,9 +19,14 @@ public class XposedInstallTile extends QuickTile {
 
         this.titleRes = R.string.title_xposed_install;
         this.summaryRes = R.string.summary_xposed_install;
-        this.iconRes = R.drawable.ic_mood_bad_black_24dp;
+        this.iconRes = R.mipmap.avatar_xposed;
 
         this.tileView = new QuickTileView(context, this) {
+            @Override
+            protected boolean useStaticTintColor() {
+                return false;
+            }
+
             @Override
             public void onClick(View v) {
                 super.onClick(v);

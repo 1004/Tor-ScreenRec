@@ -28,7 +28,9 @@ public class DateUtils {
             Date d1 = new Date(l);
             time = format.format(d1);
         } else {
-            SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd-HH-mm-ss");
+            // I have no time to fix YYYY issues.
+            // So, removed.
+            SimpleDateFormat format = new SimpleDateFormat("MM-dd-HH-mm-ss");
             Date d1 = new Date(l);
             time = format.format(d1);
         }

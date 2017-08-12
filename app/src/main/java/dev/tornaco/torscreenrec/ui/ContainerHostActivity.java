@@ -55,8 +55,8 @@ public class ContainerHostActivity extends TransitionSafeActivity {
         if (SettingsFragment.class.getName().equals(clz)) {
             return new SettingsFragment();
         }
-        if (InstallFragment.class.getName().equals(clz)) {
-            return new InstallFragment();
+        if (BridgeManagerFragment.class.getName().equals(clz)) {
+            return new BridgeManagerFragment();
         }
         if (ShopFragment.class.getName().equals(clz)) {
             return new ShopFragment();

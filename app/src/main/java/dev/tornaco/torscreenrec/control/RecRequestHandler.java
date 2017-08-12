@@ -40,7 +40,7 @@ public class RecRequestHandler {
                             new TokenAdapter() {
                                 @Override
                                 public String getDescription() throws RemoteException {
-                                    return context.getString(R.string.recorder_description);
+                                    return null; // No need?
                                 }
                             });
         } catch (RemoteException e) {

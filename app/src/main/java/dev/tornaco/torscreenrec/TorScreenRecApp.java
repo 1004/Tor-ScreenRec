@@ -2,11 +2,18 @@ package dev.tornaco.torscreenrec;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
 
 import com.google.common.collect.Lists;
+import com.stericson.rootools.RootTools;
 
 import org.newstand.logger.Logger;
 import org.newstand.logger.Settings;
@@ -19,6 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import dev.nick.library.IWatcher;
 import dev.nick.library.RecBridgeServiceProxy;
 import dev.nick.library.WatcherAdapter;
+import dev.tornaco.torscreenrec.bridge.Installer;
 import dev.tornaco.torscreenrec.common.Collections;
 import dev.tornaco.torscreenrec.common.Consumer;
 import dev.tornaco.torscreenrec.control.FloatingControllerServiceProxy;
@@ -41,6 +49,8 @@ public class TorScreenRecApp extends Application {
     @Delegate
     private LifeCycleHandler lifeCycleHandler;
 
+    private FloatViewHandler floatViewHandler;
+
     @Getter
     private static TorScreenRecApp App;
 
@@ -52,19 +62,102 @@ public class TorScreenRecApp extends Application {
         SettingsProvider.init(getApplicationContext());
         watcherProxy = new WatcherProxy();
         lifeCycleHandler = new LifeCycleHandler();
-        new FloatViewHandler().listen();
+        checkForUpdate();
+    }
+
+
+    // FIXME Impl is too ugly!!!!!!!!
+    private void checkForUpdate() {
+        new Handler().
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        boolean prebuiltUpdateAvailable = Installer.checkForNewVersionFromPrebuilt(getApplicationContext());
+                        if (prebuiltUpdateAvailable)
+                            onPrebuiltUpdateAvailable(Installer.prebuiltVersionName());
+                    }
+                }, 3000);
+    }
+
+    private void onPrebuiltUpdateAvailable(String versionName) {
+        if (getTopActivity() == null) return;
+        AlertDialog alertDialog = new AlertDialog.Builder(getTopActivity())
+                .setTitle(R.string.update_available)
+                .setMessage(getString(R.string.update_available_message, versionName))
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        onRequestUpdate();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .setCancelable(false)
+                .create();
+        alertDialog.show();
+    }
+
+    private void onRequestUpdate() {
+        final ProgressDialog p = new ProgressDialog(getTopActivity());
+        p.setIndeterminate(true);
+        p.setMessage(getString(R.string.installing));
+        p.setCancelable(false);
+        p.show();
+        Installer.unInstallAsync(getApplicationContext(), new Installer.Callback() {
+            @Override
+            public void onSuccess() {
+                Installer.installWithRootAsync(getApplicationContext(), new Installer.Callback() {
+                    @Override
+                    public void onSuccess() {
+                        p.dismiss();
+                        Snackbar.make(getTopActivity().getWindow().getDecorView(),
+                                R.string.install_success, Snackbar.LENGTH_INDEFINITE)
+                                .setAction(R.string.restart, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        RootTools.restartAndroid();
+                                    }
+                                }).show();
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable, String errTitle) {
+                        p.dismiss();
+                        Snackbar.make(getTopActivity().getWindow().getDecorView(), getString(R.string.install_fail, errTitle),
+                                Snackbar.LENGTH_LONG)
+                                .setAction(R.string.report, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+
+                                    }
+                                }).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Throwable throwable, String errTitle) {
+                Snackbar.make(getTopActivity().getWindow().getDecorView(),
+                        R.string.uninstall_fail, Snackbar.LENGTH_INDEFINITE).show();
+                p.dismiss();
+            }
+        });
+    }
+
+    private synchronized void setupFloatView() {
+        if (floatViewHandler == null) {
+            floatViewHandler = new FloatViewHandler();
+            floatViewHandler.listen();
+        }
     }
 
     private class FloatViewHandler {
 
-        FloatViewHandler() {
+        void listen() {
             if (SettingsProvider.get().getBoolean(SettingsProvider.Key.FLOAT_WINDOW)) {
                 new FloatingControllerServiceProxy(getApplicationContext())
                         .start(getApplicationContext());
             }
-        }
 
-        void listen() {
             SettingsProvider.get().addObserver(new Observer() {
                 @Override
                 public void update(Observable observable, Object o) {
@@ -91,7 +184,6 @@ public class TorScreenRecApp extends Application {
             registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
                 @Override
                 public void onActivityCreated(Activity activity, Bundle bundle) {
-
                 }
 
                 @Override
@@ -102,6 +194,7 @@ public class TorScreenRecApp extends Application {
                 @Override
                 public void onActivityResumed(Activity activity) {
                     setTopActivity(activity);
+                    setupFloatView();
                 }
 
                 @Override
@@ -121,7 +214,7 @@ public class TorScreenRecApp extends Application {
 
                 @Override
                 public void onActivityDestroyed(Activity activity) {
-
+                    SettingsProvider.get().putBoolean(SettingsProvider.Key.FIRST_RUN, false);
                 }
             });
         }

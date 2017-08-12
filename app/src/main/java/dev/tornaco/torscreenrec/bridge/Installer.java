@@ -39,6 +39,15 @@ public class Installer {
         void onFailure(Throwable throwable, String errTitle);
     }
 
+    public static String prebuiltVersionName() {
+        return PrebuiltConfig.VERSION_NAME;
+    }
+
+    public static boolean checkForNewVersionFromPrebuilt(Context context) {
+        return BridgeManager.getInstance().isInstalled(context) &&
+                PrebuiltConfig.VERSION_CODE > BridgeManager.getInstance().getVersionCode(context);
+    }
+
     public static void installWithRootAsync(final Context context, final Callback call) {
         new Thread(new Runnable() {
             @Override

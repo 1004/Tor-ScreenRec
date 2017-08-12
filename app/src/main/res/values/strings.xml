@@ -8,7 +8,7 @@
     <string name="title_need_help">Need help?</string>
     <string name="title_bridge_status">Bridge</string>
     <string name="bridge_intro"><b>录制管理器</b>是安装在Data或者System分区下的一个应用框架，该框架可以帮助我们实现快速无缝的内容以及者声音（Root版本包括r_Submix音源）录制，在开始录制内容之前，请先安装该框架。</string>
-    <string name="title_install">Install</string>
+    <string name="title_bridge_manager">Management</string>
     <string name="title_uninstall">Uninstall</string>
     <string name="screen_cast">Screen cast</string>
     <string name="others">Others</string>
@@ -164,4 +164,7 @@
     <string name="open_source">Open source</string>
     <string name="title_email">Email</string>
     <string name="release">Releases</string>
+    <string name="title_install">Install</string>
+    <string name="update_available">Bridge update</string>
+    <string name="update_available_message">New bridge of version %1$s is now available, would you like to install now?</string>
 </resources>

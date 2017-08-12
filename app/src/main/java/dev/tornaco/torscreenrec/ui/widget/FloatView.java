@@ -4,6 +4,9 @@ import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.os.RemoteException;
+import android.support.v4.content.Loader;
+import android.support.v4.view.GestureDetectorCompat;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -85,8 +89,48 @@ public class FloatView extends FrameLayout {
         return (float) alpha / 100f;
     }
 
+    private GestureDetectorCompat detectorCompat;
+
     public FloatView(final TorScreenRecApp context) {
         super(context);
+
+        detectorCompat = new GestureDetectorCompat(context, new GestureDetector.SimpleOnGestureListener(){
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                Toast.makeText(context, "onDoubleTap", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                Toast.makeText(context, "onSingleTapUp", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+                Toast.makeText(context, "onLongPress", Toast.LENGTH_SHORT).show();
+                inDragMode= true;
+                super.onLongPress(e);
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+
+                float x = e2.getX() - e1.getX();
+                float y = e2.getY() - e1.getY();
+
+                if (x > 0) {
+                    Toast.makeText(context, "RG:" + x, Toast.LENGTH_SHORT).show();
+                } else if (x < (0)) {
+                    Toast.makeText(context, "L:" + x, Toast.LENGTH_SHORT).show();
+                }
+
+
+                return true;
+
+            }
+        });
 
         mApp = context;
 
@@ -143,17 +187,20 @@ public class FloatView extends FrameLayout {
                         startX = event.getRawX();
                         startY = event.getRawY();
                         isDragging = false;
+                        inDragMode = false;
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        int dx = (int) (event.getRawX() - startX);
-                        int dy = (int) (event.getRawY() - startY);
-                        if ((dx * dx + dy * dy) > mTouchSlop) {
-                            isDragging = true;
-                            mLp.x = (int) (event.getRawX() - touchX);
-                            mLp.y = (int) (event.getRawY() - touchY);
-                            mWm.updateViewLayout(FloatView.this, mLp);
-                            return true;
-                        }
+                       if (inDragMode) {
+                           int dx = (int) (event.getRawX() - startX);
+                           int dy = (int) (event.getRawY() - startY);
+                           if ((dx * dx + dy * dy) > mTouchSlop) {
+                               isDragging = true;
+                               mLp.x = (int) (event.getRawX() - touchX);
+                               mLp.y = (int) (event.getRawY() - touchY);
+                               mWm.updateViewLayout(FloatView.this, mLp);
+                               return true;
+                           }
+                       }
                         break;
                     case MotionEvent.ACTION_UP:
                     case MotionEvent.ACTION_CANCEL:
@@ -161,10 +208,11 @@ public class FloatView extends FrameLayout {
                         if (isDragging) {
                             reposition();
                             isDragging = false;
+                            inDragMode = false;
                             return true;
                         }
                 }
-                return false;
+                return detectorCompat.onTouchEvent(event);
             }
         };
         setOnTouchListener(touchListener);
@@ -202,7 +250,7 @@ public class FloatView extends FrameLayout {
         }
     }
 
-    private boolean isDragging;
+    private boolean isDragging, inDragMode;
 
 
     private int dp2px(int dp) {

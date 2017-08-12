@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.annotation.IdRes;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -192,16 +191,37 @@ public class ScreenCastFragment extends DashboardFragment {
 
     protected void setupView() {
 
+        final View introView = findView(android.R.id.text1);
+        boolean firstRun = SettingsProvider.get().getBoolean(SettingsProvider.Key.FIRST_RUN);
+        if (firstRun) {
+            introView.setVisibility(View.VISIBLE);
+        } else {
+            introView.setVisibility(View.GONE);
+        }
+
+        View cardView = findView(R.id.card);
+
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (introView.getVisibility() == View.VISIBLE) {
+                    introView.setVisibility(View.GONE);
+                } else {
+                    introView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         Button button = findView(R.id.button);
 
         // Read status.
         BridgeManager bridgeManager = BridgeManager.getInstance();
         final boolean installed = bridgeManager.isInstalled(getContext());
-        button.setText(installed ? R.string.title_uninstall : R.string.title_install);
+        button.setText(installed ? R.string.title_uninstall : R.string.title_bridge_manager);
 
         ImageView statusView = findView(R.id.icon1);
-        statusView.setColorFilter(ContextCompat.getColor(getContext(),
-                installed ? R.color.green : R.color.red));
+//        statusView.setColorFilter(ContextCompat.getColor(getContext(),
+//                installed ? R.color.white : R.color.red));
         statusView.setImageResource(installed ? R.drawable.ic_check_circle_black_24dp
                 : R.drawable.ic_remove_circle_black_24dp);
 
@@ -228,7 +248,7 @@ public class ScreenCastFragment extends DashboardFragment {
         findView(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onRequestInstall(!installed, view);
+                startActivity(ContainerHostActivity.getIntent(getContext(), BridgeManagerFragment.class));
             }
         });
 
@@ -297,38 +317,8 @@ public class ScreenCastFragment extends DashboardFragment {
         final ProgressDialog p = new ProgressDialog(getActivity());
         p.setIndeterminate(true);
         if (install) {
-            startActivity(ContainerHostActivity.getIntent(getContext(), InstallFragment.class));
         } else {
-            p.setMessage(getString(R.string.uninstalling));
-            p.setCancelable(false);
-            p.show();
 
-            Installer.unInstallAsync(getContext(), new Installer.Callback() {
-                @Override
-                public void onSuccess() {
-                    p.dismiss();
-                    Snackbar.make(view, R.string.uninstall_success, Snackbar.LENGTH_INDEFINITE)
-                            .setAction(R.string.restart, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    RootTools.restartAndroid();
-                                }
-                            }).show();
-                }
-
-                @Override
-                public void onFailure(Throwable throwable, String errTitle) {
-                    p.dismiss();
-                    Snackbar.make(view, getString(R.string.uninstall_fail, errTitle),
-                            Snackbar.LENGTH_LONG)
-                            .setAction(R.string.report, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-
-                                }
-                            }).show();
-                }
-            });
         }
     }
 

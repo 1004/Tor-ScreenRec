@@ -9,7 +9,7 @@
     <string name="bridge_intro"><b>录制管理器</b>是安装在<i>Data</i>或者<i>System</i>分区下的一个应用框架，该框架可以帮助我们实现快速无缝的内容以及者声音（<i>Root</i>版本包括<i>r_Submix</i>音源）录制，在开始录制内容之前，请先安装该框架。
     \n\n注意：如果你选择<i>r_Submix</i>音源，录制过程中手机媒体通道会转到录制频道上，因此录制过程中你可能听不到设备的声音。
     </string>
-    <string name="title_install">立即安装</string>
+    <string name="title_bridge_manager">框架管理</string>
     <string name="title_uninstall">卸载</string>
     <string name="screen_cast">录制</string>
     <string name="others">其他</string>
@@ -162,4 +162,7 @@
     <string name="open_source">应用源代码</string>
     <string name="title_email">Email</string>
     <string name="release">Releases</string>
+    <string name="title_install">安装</string>
+    <string name="update_available">框架更新</string>
+    <string name="update_available_message">新版本（%1$s）的录屏框架可用，你现在要安装改更新吗？</string>
 </resources>

@@ -24,9 +24,16 @@ public class RootInstallTile extends QuickTile {
 
         this.titleRes = R.string.title_root_install;
         this.summaryRes = R.string.summary_root_install;
-        this.iconRes = R.drawable.ic_mood_black_24dp;
+        this.iconRes = R.mipmap.avatar_root;
 
         this.tileView = new QuickTileView(context, this) {
+
+
+            @Override
+            protected boolean useStaticTintColor() {
+                return false;
+            }
+
             @Override
             public void onClick(View v) {
                 super.onClick(v);
